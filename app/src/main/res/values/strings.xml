@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">wordcloud</string>
+    <string name="action_settings">Settings</string>
+</resources>
