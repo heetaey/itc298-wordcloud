@@ -1,4 +1,10 @@
 <resources>
-    <string name="app_name">wordcloud</string>
+    <string name="app_name">WORD CLOUD</string>
     <string name="action_settings">Settings</string>
+    <string name="generate">GENERATE!</string>
+    <string name="appearanceRate">Percentage of the appearnce</string>
+    <string name="inputTitle">Place your text input below:</string>
+    <string name="buzzWord">The most common word</string>
+    <string name="uniqueWords">Number of distinct words</string>
+    <string name="totalWord">Total word count</string>
 </resources>

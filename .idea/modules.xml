@@ -4,6 +4,10 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/itc298-wordcloud.iml" filepath="$PROJECT_DIR$/itc298-wordcloud.iml" />
+<<<<<<< Updated upstream
+=======
+      <module fileurl="file://$PROJECT_DIR$/wordcloud.iml" filepath="$PROJECT_DIR$/wordcloud.iml" />
+>>>>>>> Stashed changes
     </modules>
   </component>
 </project>
