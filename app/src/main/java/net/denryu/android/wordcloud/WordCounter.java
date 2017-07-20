@@ -48,7 +48,6 @@ public class WordCounter {
             }
         }
         this.wordCountMap = wordCountMap;
-        sortMap();
         setMostCommonWord();
     }
 
