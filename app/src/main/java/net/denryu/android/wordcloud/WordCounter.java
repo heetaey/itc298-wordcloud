@@ -27,10 +27,9 @@ public class WordCounter {
     public void countWords(String in){
         Map<String, Integer> wordCountMap = new TreeMap<String, Integer>();
 
-        //this returns an array of spaces.
-        String[] allWords = in.split("((\\b[^\\s]+\\b)((?<=\\.\\w).)?)");
-        //this is simple split on spaces for debugging purposes. Fix line above then delete this line
-        allWords = in.split(" ");
+        
+        //this regex uses all non alpha-numeric characters (plus apostrophes) as delimiters
+        String[] allWords = in.split("[^a-zA-Z0-9']");
 
         countOfWords = allWords.length;
         for( int i = 0; i <= countOfWords - 1; i++){
