@@ -47,7 +47,6 @@ public class WordCounter {
             }
         }
         this.wordCountMap = wordCountMap;
-        sortMap();
         setMostCommonWord();
     }
 
@@ -66,21 +65,6 @@ public class WordCounter {
         }
         mostCommonWord = mostCommon;
         appearanceRate = 1.0 * highestCount / countOfWords;
-    }
-
-    //not yet functioning
-    private void sortMap() {
-        Stream<Map.Entry<String,Integer>> sortedStream = wordCountMap.entrySet()
-                .stream()
-                .sorted(Map.Entry.comparingByValue());
-
-        //this code breaks. Need to figure out how to change from stream to Set or Map
-        //Map<String, Integer> sortedMap = sortedStream.collect(Collectors.toMap(null, null));
-
-        //Turner's code:
-        //wordCountMap.entrySet()
-        // .stream()
-        // .sorted(Comparator.comparingInt(Map.Entry<String,Integer>::getValue())); //.toSet?
     }
 
     public int distinctWordCount() {
