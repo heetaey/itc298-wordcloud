@@ -7,4 +7,5 @@
     <string name="buzzWord">The most common word</string>
     <string name="uniqueWords">Number of distinct words</string>
     <string name="totalWord">Total word count</string>
+    <string name="openFileButton">OPEN FILE</string>
 </resources>
