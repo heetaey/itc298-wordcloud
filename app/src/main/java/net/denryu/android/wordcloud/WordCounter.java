@@ -6,7 +6,10 @@ package net.denryu.android.wordcloud;
 //import java.util.TreeMap;
 //import java.io.*;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.*;
+
+import static java.util.Arrays.stream;
 //import android.util.Log;
 
 /**
@@ -25,46 +28,47 @@ public class WordCounter {
     }
 
     public void countWords(String in){
-        Map<String, Integer> wordCountMap = new TreeMap<String, Integer>();
 
-        
         //this regex uses all non alpha-numeric characters (plus apostrophes) as delimiters
         String[] allWords = in.split("[^a-zA-Z0-9']");
 
-        countOfWords = allWords.length;
-        for( int i = 0; i <= countOfWords - 1; i++){
-            String word = allWords[i].toLowerCase();
-            if (!wordCountMap.containsKey(word)) {
-                // never seen this word before
+        this.countOfWords = allWords.length;
+        this.wordCountMap = new HashMap<>();
 
-                wordCountMap.put(word, 1);
-            } else {
-                // seen this word before; increment count
-
-                int count = wordCountMap.get(word);
-
-                wordCountMap.put(word, count + 1);
-            }
+        Map<String, Long> preliminaryWordMap = Arrays.stream(allWords).collect(Collectors.groupingBy(String::toLowerCase, Collectors.counting()));
+        for (Map.Entry<String,Long> wordGroup : preliminaryWordMap.entrySet())
+        {
+            this.wordCountMap.put(wordGroup.getKey(), wordGroup.getValue().intValue());
         }
-        this.wordCountMap = wordCountMap;
-        setMostCommonWord();
+
+        this.setMostCommonWord();
+    }
+
+    private Map.Entry<String, Integer> deriveMostCommonWordStat()
+    {
+        String key = null;
+
+        Stream<Map.Entry<String,Integer>> wordStream = wordCountMap.entrySet().stream();
+
+        Optional<Map.Entry<String,Integer>> foundWord = wordStream.sorted(Comparator.comparingInt(Map.Entry<String,Integer>::getValue).reversed())
+                .findFirst();
+
+        return foundWord.isPresent() ? foundWord.get() : new AbstractMap.SimpleEntry<>("[no words entered]",0);
     }
 
     private void setMostCommonWord() {
-        String mostCommon = "";
-        int highestCount = 0;
+        Map.Entry<String, Integer> mostCommonWordStat = this.deriveMostCommonWordStat();
+        this.mostCommonWord = mostCommonWordStat.getKey();
 
-        int currCount = 0;
-        //iterate through each word in the map to find the highest count
-        for (String word : wordCountMap.keySet()) {
-            currCount = wordCountMap.get(word);
-            if (currCount > highestCount) {
-                mostCommon = word;
-                highestCount = currCount;
-            }
+        // Ensure CountOfWords is not zero before dividing by it to avoid a DivideByZero exception
+        if(this.countOfWords != 0)
+        {
+            this.appearanceRate = ((float) mostCommonWordStat.getValue()) / countOfWords;
         }
-        mostCommonWord = mostCommon;
-        appearanceRate = 1.0 * highestCount / countOfWords;
+        else
+        {
+            this.appearanceRate = 0.0f;
+        }
     }
 
     public int distinctWordCount() {
