@@ -1,6 +1,8 @@
 package net.denryu.android.wordcloud;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -10,6 +12,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Created by hsMacbook on 2017. 7. 17..
@@ -93,8 +100,40 @@ public class WordcloudActivity extends AppCompatActivity implements
 
     private void openFile() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         startActivityForResult(intent, OPEN_DOCUMENT_REQUEST);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData){
+
+        if(requestCode == OPEN_DOCUMENT_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (resultData != null) {
+                Uri uri = resultData.getData();
+
+                try {
+                    String content = readFileContent(uri);
+                    txtInput.setText(content);
+                } catch (IOException e) {
+                    //Some log, Alert or Toast goes here
+                }
+
+            }
+        }
+    }
+
+    private String readFileContent(Uri uri) throws IOException {
+
+        InputStream inStream = getContentResolver().openInputStream(uri);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
+        StringBuilder stringBuilder = new StringBuilder();
+        String currentline;
+        while((currentline = reader.readLine()) != null) {
+            stringBuilder.append(currentline + "\n");
+        }
+        inStream.close();
+        return stringBuilder.toString();
     }
 
 }
