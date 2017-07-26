@@ -150,4 +150,13 @@
             android:textSize="25sp" />
     </LinearLayout>
 
+    <Button
+        android:id="@+id/openFileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/inputTxtView"
+        android:layout_alignTop="@+id/generateButton"
+        android:layout_marginStart="27dp"
+        android:text="@string/openFileButton" />
+
 </RelativeLayout>
