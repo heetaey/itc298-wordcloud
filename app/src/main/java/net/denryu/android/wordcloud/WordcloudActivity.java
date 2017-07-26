@@ -37,6 +37,7 @@ public class WordcloudActivity extends AppCompatActivity implements
     private TextView totalCount, totalCountResult;
 
     private WordCounter wordCounter;
+    private WordCounterDB wordCounterDB;
 
 
 
@@ -62,6 +63,7 @@ public class WordcloudActivity extends AppCompatActivity implements
         totalCountResult = (TextView) findViewById(R.id.totalCountings);
 
         wordCounter = new WordCounter();
+        wordCounterDB = new WordCounterDB(this);
 
     }
 
@@ -89,6 +91,7 @@ public class WordcloudActivity extends AppCompatActivity implements
     }
 
     public void populateResults() {
+        wordCounterDB.insertWords(wordCounter.getWordCountMap());
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
