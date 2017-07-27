@@ -46,8 +46,6 @@ public class WordCounter {
 
     private Map.Entry<String, Integer> deriveMostCommonWordStat()
     {
-        String key = null;
-
         Stream<Map.Entry<String,Integer>> wordStream = wordCountMap.entrySet().stream();
 
         Optional<Map.Entry<String,Integer>> foundWord = wordStream.sorted(Comparator.comparingInt(Map.Entry<String,Integer>::getValue).reversed())
