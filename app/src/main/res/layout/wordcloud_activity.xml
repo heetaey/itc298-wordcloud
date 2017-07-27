@@ -35,8 +35,7 @@
         android:text="@string/generate"
         android:layout_marginTop="17dp"
         android:layout_below="@+id/txtInput"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp" />
+        android:layout_alignParentEnd="true" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -154,9 +153,16 @@
         android:id="@+id/openFileButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/inputTxtView"
-        android:layout_alignTop="@+id/generateButton"
-        android:layout_marginStart="27dp"
-        android:text="@string/openFileButton" />
+        android:text="@string/openFileButton"
+        android:layout_above="@+id/linearLayout"
+        android:layout_toStartOf="@+id/generateButton" />
+
+    <Button
+        android:id="@+id/clearHistoryButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearLayout"
+        android:layout_alignParentStart="true"
+        android:text="@string/clearHistory" />
 
 </RelativeLayout>
