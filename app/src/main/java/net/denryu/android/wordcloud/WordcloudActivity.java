@@ -27,14 +27,14 @@ public class WordcloudActivity extends AppCompatActivity implements
 
     private static final int OPEN_DOCUMENT_REQUEST = 1;
 
-    private TextView inputTxtView;
     private EditText txtInput;
+    private Button clearHistoryButton;
     private Button openFileButton;
     private Button generateButton;
-    private TextView mostWord, mostWordResult;
-    private TextView appearanceRate, appearanceResult;
-    private TextView uniqueWords, uniqueResult;
-    private TextView totalCount, totalCountResult;
+    private TextView mostWordResult;
+    private TextView appearanceResult;
+    private TextView uniqueResult;
+    private TextView totalCountResult;
 
     private WordCounter wordCounter;
     private WordCounterDB wordCounterDB;
@@ -46,25 +46,22 @@ public class WordcloudActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordcloud_activity);
 
-        inputTxtView = (TextView) findViewById(R.id.inputTxtView);
         txtInput = (EditText) findViewById(R.id.txtInput);
+        txtInput.setText(String.format("Here is some bonanza text to bonanza the bonanza of the text that is the bonanza Michael's text of Bonanza bonanzas."));
         generateButton = (Button) findViewById(R.id.generateButton);
         generateButton.setOnClickListener(this);
         openFileButton = (Button) findViewById(R.id.openFileButton);
         openFileButton.setOnClickListener(this);
+        clearHistoryButton = (Button) findViewById(R.id.clearHistoryButton);
+        clearHistoryButton.setOnClickListener(this);
 
-        mostWord = (TextView) findViewById(R.id.mostWord);
         mostWordResult = (TextView) findViewById(R.id.commonWord);
-        appearanceRate = (TextView) findViewById(R.id.appearanceRate);
         appearanceResult = (TextView) findViewById(R.id.appearanceResult);
-        uniqueWords = (TextView) findViewById(R.id.uniqueWords);
         uniqueResult = (TextView) findViewById(R.id.distinctResult);
-        totalCount = (TextView) findViewById(R.id.totalCount);
         totalCountResult = (TextView) findViewById(R.id.totalCountings);
 
         wordCounter = new WordCounter();
         wordCounterDB = new WordCounterDB(this);
-
     }
 
     @Override
@@ -81,11 +78,14 @@ public class WordcloudActivity extends AppCompatActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.generateButton:
-                wordCounter.countWords(txtInput.getText().toString());
+                processInput(txtInput.getText().toString());
                 populateResults();
                 break;
             case R.id.openFileButton:
                 openFile();
+                break;
+            case R.id.clearHistoryButton:
+                clearHistory();
                 break;
         }
     }
@@ -97,8 +97,6 @@ public class WordcloudActivity extends AppCompatActivity implements
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
         String appearanceRateString = String.valueOf((int)(100 * wordCounter.appearanceRate)) + '%';
         appearanceResult.setText(appearanceRateString);
-
-
     }
 
     private void openFile() {
@@ -106,6 +104,14 @@ public class WordcloudActivity extends AppCompatActivity implements
         intent.addCategory(Intent.CATEGORY_OPENABLE);
         intent.setType("text/plain");
         startActivityForResult(intent, OPEN_DOCUMENT_REQUEST);
+    }
+
+    private void processInput(String text) {
+        wordCounter.countWords(text);
+    }
+
+    private void clearHistory() {
+        wordCounterDB.clearDB();
     }
 
     @Override
