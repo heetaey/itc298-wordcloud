@@ -13,7 +13,7 @@ public class WordCounterDB {
 
     //database constants
     public static final String DB_NAME = "wordcloud.db";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 3;
 
     //table constant
     public static final String WORDCOUNTER_TABLE = "wordcounter";
@@ -90,9 +90,18 @@ public class WordCounterDB {
 
         this.openWriteableDB();
         long rowID = db.insert(WORDCOUNTER_TABLE, null, cv);
-        Log.d("WordCounter", "Added to database: word " + word + " with count of " + count);
+        Log.d("WordCounter", "Added to database at row " + rowID + ": word " + word + " with count of " + count);
         this.closeDB();
         return rowID;
+    }
+
+    //drop database tables, but maintain database definition
+    public void clearDB() {
+        this.openWriteableDB();
+        db.execSQL(WordCounterDB.DROP_WORDCOUNTER_TABLE);
+        Log.d("WordCounter", "Wordcounter Table dropped from db.");
+        dbHelper.onCreate(db);
+        this.closeDB();
     }
 
 //    //Add a public getTips method that returns an ArrayList<Tip> object that contains all columns and rows from the database table.
@@ -151,7 +160,7 @@ public class WordCounterDB {
 
             Log.d("WordCounter", "Upgrading db from version " + oldVersion + " to " + newVersion);
 
-            db.execSQL(WordCounterDB.DROP_WORDCOUNTER_TABLE);
+//            db.execSQL(WordCounterDB.DROP_WORDCOUNTER_TABLE);
             onCreate(db);
         }
     }
