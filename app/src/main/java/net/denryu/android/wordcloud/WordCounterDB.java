@@ -52,8 +52,6 @@ public class WordCounterDB {
     private DBHelper dbHelper;
 
     public WordCounterDB(Context context){
-
-//        Log.d("Word Counter", "Inside WordsDB constructor");
         dbHelper = new DBHelper(context, DB_NAME, null, DB_VERSION);
     }
 
@@ -104,39 +102,6 @@ public class WordCounterDB {
         this.closeDB();
     }
 
-//    //Add a public getTips method that returns an ArrayList<Tip> object that contains all columns and rows from the database table.
-//    public ArrayList<Tip> getTips() {
-//
-//        this.openReadableDB();
-//        Cursor cursor =  db.query(WORD_TABLE, null, null, null, null, null, null);
-//        ArrayList<Tip> tips = new ArrayList<Tip>();
-//        while (cursor.moveToNext()) {
-//            tips.add(getTipFromCursor(cursor));
-//        }
-//        //close db connections
-//        if (cursor != null)
-//            cursor.close();
-//        this.closeDB();
-//
-//        return tips;
-//    }
-//
-//    private static Tip getTipFromCursor(Cursor cursor) {
-//        if (cursor == null || cursor.getCount() <= 0)
-//            return null;
-//
-//        try {
-//            Tip tip = new Tip(
-//                    cursor.getInt(WORD_ID_COL)
-//                    ,cursor.getInt(BILL_DATE_COL)
-//                    ,cursor.getLong(BILL_AMOUNT_COL)
-//                    ,cursor.getLong(WORD_PERCENT_COL));
-//            return tip;
-//        } catch (Exception e) {
-//            return null;
-//        }
-//    }
-
     private static class DBHelper extends SQLiteOpenHelper {
 
         public DBHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -148,11 +113,7 @@ public class WordCounterDB {
 
             db.execSQL(CREATE_WORDCOUNTER_TABLE);
 
-//            db.execSQL("INSERT INTO " + WORDCOUNTER_TABLE + " VALUES (1, 0, 100.00, 0.2)");
-//            db.execSQL("INSERT INTO " + WORDCOUNTER_TABLE + " VALUES (2, 1, 10.98, 0.15)");
-
             Log.d("WordCounter", "Wordcounter database table created");
-
         }
 
         @Override
@@ -160,7 +121,7 @@ public class WordCounterDB {
 
             Log.d("WordCounter", "Upgrading db from version " + oldVersion + " to " + newVersion);
 
-//            db.execSQL(WordCounterDB.DROP_WORDCOUNTER_TABLE);
+            db.execSQL(WordCounterDB.DROP_WORDCOUNTER_TABLE);
             onCreate(db);
         }
     }
