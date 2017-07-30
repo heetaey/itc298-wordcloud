@@ -1,17 +1,20 @@
 package net.denryu.android.wordcloud;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -28,6 +31,7 @@ public class WordcloudActivity extends AppCompatActivity implements
     private static final int OPEN_DOCUMENT_REQUEST = 1;
 
     private EditText txtInput;
+
     private Button clearHistoryButton;
     private Button openFileButton;
     private Button generateButton;
@@ -40,14 +44,12 @@ public class WordcloudActivity extends AppCompatActivity implements
     private WordCounterDB wordCounterDB;
 
 
-
     @Override
-    public void onCreate (Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordcloud_activity);
 
         txtInput = (EditText) findViewById(R.id.txtInput);
-        txtInput.setText(String.format("Here is some bonanza text to bonanza the bonanza of the text that is the bonanza Michael's text of Bonanza bonanzas."));
         generateButton = (Button) findViewById(R.id.generateButton);
         generateButton.setOnClickListener(this);
         openFileButton = (Button) findViewById(R.id.openFileButton);
@@ -63,6 +65,39 @@ public class WordcloudActivity extends AppCompatActivity implements
         wordCounter = new WordCounter();
         wordCounterDB = new WordCounterDB(this);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_word_input, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_share:
+                Intent myIntent = new Intent(Intent.ACTION_SEND);
+                myIntent.setType("text/plain");
+                String shareBody = "Your body here";
+                String shareSub = "Your subject here";
+                myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
+                myIntent.putExtra(Intent.EXTRA_TEXT, shareSub);
+                startActivity(myIntent.createChooser(myIntent, "Share Using"));
+                return true;
+            case R.id.about:
+                new AlertDialog.Builder(this).setTitle("About")
+                        .setMessage("This will have our ABOUT messages")
+                        .setNeutralButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        }).show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 
     @Override
     public void onPause() {
@@ -90,19 +125,20 @@ public class WordcloudActivity extends AppCompatActivity implements
         }
     }
 
+
     public void populateResults() {
         wordCounterDB.insertWords(wordCounter.getWordCountMap());
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
-        String appearanceRateString = String.valueOf((int)(100 * wordCounter.appearanceRate)) + '%';
+        String appearanceRateString = String.valueOf((int) (100 * wordCounter.appearanceRate)) + '%';
         appearanceResult.setText(appearanceRateString);
     }
 
     private void openFile() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("text/plain");
+        intent.setType("text/*");
         startActivityForResult(intent, OPEN_DOCUMENT_REQUEST);
     }
 
@@ -115,9 +151,9 @@ public class WordcloudActivity extends AppCompatActivity implements
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent resultData){
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
 
-        if(requestCode == OPEN_DOCUMENT_REQUEST && resultCode == Activity.RESULT_OK) {
+        if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
                 Uri uri = resultData.getData();
 
@@ -133,12 +169,11 @@ public class WordcloudActivity extends AppCompatActivity implements
     }
 
     private String readFileContent(Uri uri) throws IOException {
-
         InputStream inStream = getContentResolver().openInputStream(uri);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
         StringBuilder stringBuilder = new StringBuilder();
         String currentline;
-        while((currentline = reader.readLine()) != null) {
+        while ((currentline = reader.readLine()) != null) {
             stringBuilder.append(currentline + "\n");
         }
         inStream.close();
