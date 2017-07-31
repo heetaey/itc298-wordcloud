@@ -32,7 +32,7 @@ public class WordcloudActivity extends AppCompatActivity implements
 
     private EditText txtInput;
 
-    private Button clearHistoryButton;
+    private Button clearInputButton;
     private Button openFileButton;
     private Button generateButton;
     private TextView mostWordResult;
@@ -54,8 +54,8 @@ public class WordcloudActivity extends AppCompatActivity implements
         generateButton.setOnClickListener(this);
         openFileButton = (Button) findViewById(R.id.openFileButton);
         openFileButton.setOnClickListener(this);
-        clearHistoryButton = (Button) findViewById(R.id.clearHistoryButton);
-        clearHistoryButton.setOnClickListener(this);
+        clearInputButton = (Button) findViewById(R.id.clearInputButton);
+        clearInputButton.setOnClickListener(this);
 
         mostWordResult = (TextView) findViewById(R.id.commonWord);
         appearanceResult = (TextView) findViewById(R.id.appearanceResult);
@@ -85,6 +85,9 @@ public class WordcloudActivity extends AppCompatActivity implements
                 myIntent.putExtra(Intent.EXTRA_TEXT, shareSub);
                 startActivity(myIntent.createChooser(myIntent, "Share Using"));
                 return true;
+            case R.id.item_clear_history:
+                clearHistory();
+                break;
             case R.id.about:
                 new AlertDialog.Builder(this).setTitle("About")
                         .setMessage("This will have our ABOUT messages")
@@ -119,8 +122,8 @@ public class WordcloudActivity extends AppCompatActivity implements
             case R.id.openFileButton:
                 openFile();
                 break;
-            case R.id.clearHistoryButton:
-                clearHistory();
+            case R.id.clearInputButton:
+                txtInput.setText("");
                 break;
         }
     }
