@@ -7,6 +7,7 @@ package net.denryu.android.wordcloud;
 //import java.io.*;
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Pattern;
 import java.util.stream.*;
 
 import static java.util.Arrays.stream;
@@ -32,10 +33,16 @@ public class WordCounter {
         //this regex uses all non alpha-numeric characters (plus apostrophes) as delimiters
         String[] allWords = in.split("[^a-zA-Z0-9']+");
 
-        this.countOfWords = allWords.length;
+        List<String> wordsList = new ArrayList<String>(Arrays.asList(allWords));
+        Pattern regex = Pattern.compile("[a-zA-Z0-9']+");
+        List<String> cleanWordsList = wordsList.stream()
+                .filter(regex.asPredicate())
+                .collect(Collectors.toList());
+
+        this.countOfWords = cleanWordsList.size();
         this.wordCountMap = new HashMap<>();
 
-        Map<String, Long> preliminaryWordMap = Arrays.stream(allWords).collect(Collectors.groupingBy(String::toLowerCase, Collectors.counting()));
+        Map<String, Long> preliminaryWordMap = cleanWordsList.stream().collect(Collectors.groupingBy(String::toLowerCase, Collectors.counting()));
         for (Map.Entry<String,Long> wordGroup : preliminaryWordMap.entrySet())
         {
             this.wordCountMap.put(wordGroup.getKey(), wordGroup.getValue().intValue());
