@@ -83,7 +83,7 @@ public class WordcloudActivity extends AppCompatActivity implements
                 String shareSub = "Your subject here";
                 myIntent.putExtra(Intent.EXTRA_SUBJECT, shareBody);
                 myIntent.putExtra(Intent.EXTRA_TEXT, shareSub);
-                startActivity(myIntent.createChooser(myIntent, "Share Using"));
+                startActivity(Intent.createChooser(myIntent, "Share Using"));
                 return true;
             case R.id.item_clear_history:
                 clearHistory();
@@ -123,7 +123,21 @@ public class WordcloudActivity extends AppCompatActivity implements
                 openFile();
                 break;
             case R.id.clearInputButton:
-                txtInput.setText("");
+                new AlertDialog.Builder(this).
+                        setMessage("Are you sure you want to clear all text input?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id){
+                                txtInput.setText("");
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id){
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
                 break;
         }
     }
