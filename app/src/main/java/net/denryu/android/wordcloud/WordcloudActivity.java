@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+
+
 import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
@@ -91,7 +93,8 @@ public class WordcloudActivity extends AppCompatActivity implements
     }
 
     public void populateResults() {
-        wordCounterDB.insertWords(wordCounter.getWordCountMap());
+
+        wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
