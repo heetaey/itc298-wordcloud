@@ -2,11 +2,11 @@
 #### Team 2 Michael Archambault, Turner Tackitt, Joseph Wanderer, Heetae Yang
 
 ### Details
-> This application will allows the user to generate out put and visually present data.
+- This application will allows the user to generate out put and visually present data.
 
 ### Input Operation
 - Text to Process can come from a variety of sources
-> Text Field // Cloud Storage (Dropbox, Google Drive, etc.) // Select Files on Device
+- Text Field // Cloud Storage (Dropbox, Google Drive, etc.) // Select Files on Device
 
 ### Output Operation
 > WILL JOT DOWN THINGS THAT WILL BE USED/IMPLEMENTED IN ORDER TO HAVE THE OUTCOME FILE (IMG/PNG/JPEG/ETCS)
