@@ -1,4 +1,4 @@
-## ITC298: Mobile App Development Capstone 2017: Word Cloud
+## ITC298: Mobile App Development Capstone 2017: Word Cloud 
 #### Team 2 Michael Archambault, Turner Tackitt, Joseph Wanderer, Heetae Yang
 
 ### Details
@@ -17,3 +17,8 @@
 * Content Provider Consumption (linking to 3rd-party apps for cloud storage)
 * Rendering (to create the word cloud)
 * Dynamically-created WebView content (to display colored document)
+
+### Word Cloud's custom image
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/22667520/28812952-06927bcc-764c-11e7-8362-695783845d66.png"/>
+</p>
