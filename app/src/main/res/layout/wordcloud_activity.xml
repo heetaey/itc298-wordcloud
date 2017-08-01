@@ -43,10 +43,10 @@
     </android.support.design.widget.TextInputLayout>
 
     <Button
-        android:id="@+id/clearHistoryButton"
+        android:id="@+id/clearInputButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/clearHistory"
+        android:text="@string/clearInput"
         android:layout_below="@+id/textContainer"
         android:layout_alignParentStart="true" />
 
@@ -73,7 +73,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_below="@+id/clearHistoryButton"
+        android:layout_below="@+id/clearInputButton"
         android:layout_alignParentStart="true"
         android:layout_marginTop="20dp">
 
