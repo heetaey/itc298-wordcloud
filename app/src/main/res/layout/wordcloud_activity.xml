@@ -27,7 +27,7 @@
         android:layout_below="@+id/inputTxtView"
         android:layout_alignParentStart="true">
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/txtInput"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

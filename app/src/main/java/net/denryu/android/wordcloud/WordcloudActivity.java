@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -31,7 +32,6 @@ public class WordcloudActivity extends AppCompatActivity implements
     private static final int OPEN_DOCUMENT_REQUEST = 1;
 
     private EditText txtInput;
-
     private Button clearInputButton;
     private Button openFileButton;
     private Button generateButton;
@@ -42,7 +42,6 @@ public class WordcloudActivity extends AppCompatActivity implements
 
     private WordCounter wordCounter;
     private WordCounterDB wordCounterDB;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,6 +63,33 @@ public class WordcloudActivity extends AppCompatActivity implements
 
         wordCounter = new WordCounter();
         wordCounterDB = new WordCounterDB(this);
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if ("text/plain".equals(type)) {
+                handleSendText(intent);
+            }
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    void handleSendText(Intent intent) {
+        String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (sharedText != null) {
+            txtInput.setText(sharedText);
+        }
     }
 
     @Override
@@ -101,17 +127,6 @@ public class WordcloudActivity extends AppCompatActivity implements
         return super.onOptionsItemSelected(item);
     }
 
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -127,13 +142,13 @@ public class WordcloudActivity extends AppCompatActivity implements
                         setMessage("Are you sure you want to clear all text input?")
                         .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int id){
+                            public void onClick(DialogInterface dialog, int id) {
                                 txtInput.setText("");
                             }
                         })
                         .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                             @Override
-                            public void onClick(DialogInterface dialog, int id){
+                            public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                             }
                         })
@@ -141,7 +156,6 @@ public class WordcloudActivity extends AppCompatActivity implements
                 break;
         }
     }
-
 
     public void populateResults() {
         wordCounterDB.insertWords(wordCounter.getWordCountMap());
@@ -169,7 +183,6 @@ public class WordcloudActivity extends AppCompatActivity implements
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
-
         if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
                 Uri uri = resultData.getData();
