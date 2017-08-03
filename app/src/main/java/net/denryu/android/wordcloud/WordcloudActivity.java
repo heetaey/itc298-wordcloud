@@ -17,6 +17,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import net.alhazmy13.wordcloud.ColorTemplate;
 import net.alhazmy13.wordcloud.WordCloud;
 import net.alhazmy13.wordcloud.WordCloudView;
@@ -173,7 +179,11 @@ public class WordcloudActivity extends AppCompatActivity implements
     }
 
     public void populateResults() {
-        wordCounterDB.insertWords(wordCounter.getWordCountMap());
+
+        wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
+
+
+        wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
