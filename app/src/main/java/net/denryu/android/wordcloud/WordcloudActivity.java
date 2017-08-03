@@ -18,9 +18,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 
 import org.w3c.dom.Text;
+=======
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+>>>>>>> f34a0616f19a8ad05356d547762c0260ef14d67a
 
 =======
 >>>>>>> f34a0616f19a8ad05356d547762c0260ef14d67a
@@ -70,11 +77,19 @@ public class WordcloudActivity extends AppCompatActivity implements
 
         wordCounter = new WordCounter();
         wordCounterDB = new WordCounterDB(this);
+<<<<<<< HEAD
 
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
 
+=======
+
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+>>>>>>> f34a0616f19a8ad05356d547762c0260ef14d67a
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent);
@@ -165,8 +180,12 @@ public class WordcloudActivity extends AppCompatActivity implements
     }
 
     public void populateResults() {
+<<<<<<< HEAD
 
         wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
+=======
+        wordCounterDB.insertWords(wordCounter.getWordCountMap());
+>>>>>>> f34a0616f19a8ad05356d547762c0260ef14d67a
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
@@ -184,6 +203,7 @@ public class WordcloudActivity extends AppCompatActivity implements
     private void processInput(String text) {
         wordCounter.countWords(text);
     }
+<<<<<<< HEAD
 
     private void clearHistory() {
         wordCounterDB.clearDB();
@@ -218,4 +238,40 @@ public class WordcloudActivity extends AppCompatActivity implements
         return stringBuilder.toString();
     }
 
+=======
+
+    private void clearHistory() {
+        wordCounterDB.clearDB();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
+        if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == Activity.RESULT_OK) {
+            if (resultData != null) {
+                Uri uri = resultData.getData();
+
+                try {
+                    String content = readFileContent(uri);
+                    txtInput.setText(content);
+                } catch (IOException e) {
+                    //Some log, Alert or Toast goes here
+                }
+
+            }
+        }
+    }
+
+    private String readFileContent(Uri uri) throws IOException {
+        InputStream inStream = getContentResolver().openInputStream(uri);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inStream));
+        StringBuilder stringBuilder = new StringBuilder();
+        String currentline;
+        while ((currentline = reader.readLine()) != null) {
+            stringBuilder.append(currentline + "\n");
+        }
+        inStream.close();
+        return stringBuilder.toString();
+    }
+
+>>>>>>> f34a0616f19a8ad05356d547762c0260ef14d67a
 }
