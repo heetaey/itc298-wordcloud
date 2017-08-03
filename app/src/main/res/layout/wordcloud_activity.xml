@@ -67,6 +67,14 @@
         android:layout_alignParentEnd="true" />
 
 
+    <Button
+        android:id="@+id/generateImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="GENERATE@@"
+        android:layout_alignBaseline="@+id/clearInputButton"
+        android:layout_alignBottom="@+id/clearInputButton"
+        android:layout_toStartOf="@+id/openFileButton" />
 
     <LinearLayout
         android:id="@+id/linearLayout"

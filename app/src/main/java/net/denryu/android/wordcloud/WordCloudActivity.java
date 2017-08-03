@@ -17,6 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import net.alhazmy13.wordcloud.ColorTemplate;
+import net.alhazmy13.wordcloud.WordCloud;
+import net.alhazmy13.wordcloud.WordCloudView;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,7 +30,7 @@ import java.io.InputStreamReader;
  * Created by hsMacbook on 2017. 7. 17..
  */
 
-public class WordcloudActivity extends AppCompatActivity implements
+public class WordCloudActivity extends AppCompatActivity implements
         OnClickListener {
 
     private static final int OPEN_DOCUMENT_REQUEST = 1;
@@ -39,6 +43,9 @@ public class WordcloudActivity extends AppCompatActivity implements
     private TextView appearanceResult;
     private TextView uniqueResult;
     private TextView totalCountResult;
+
+    //this button will be used for creating the output image
+    private Button generateImage;
 
     private WordCounter wordCounter;
     private WordCounterDB wordCounterDB;
@@ -63,6 +70,10 @@ public class WordcloudActivity extends AppCompatActivity implements
 
         wordCounter = new WordCounter();
         wordCounterDB = new WordCounterDB(this);
+
+        //this button will be used for creating the output image
+        generateImage = (Button) findViewById(R.id.generateImage);
+        generateImage.setOnClickListener(this);
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -153,6 +164,10 @@ public class WordcloudActivity extends AppCompatActivity implements
                             }
                         })
                         .show();
+                break;
+            case R.id.generateImage:
+                Intent i = new Intent(getApplicationContext(), WordCloudOutput.class);
+                startActivity(i);
                 break;
         }
     }
