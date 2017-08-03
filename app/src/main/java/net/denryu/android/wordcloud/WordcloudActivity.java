@@ -30,7 +30,7 @@ import java.io.InputStreamReader;
  * Created by hsMacbook on 2017. 7. 17..
  */
 
-public class WordCloudActivity extends AppCompatActivity implements
+public class WordcloudActivity extends AppCompatActivity implements
         OnClickListener {
 
     private static final int OPEN_DOCUMENT_REQUEST = 1;
