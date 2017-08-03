@@ -71,8 +71,19 @@ public class WordcloudActivity extends AppCompatActivity implements
         Log.d("WordcloudActivity", "intent: " + intent.toString());
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
+            Log.d("WordcloudActivity", "intentData: " + intent.getClipData().getItemAt(0).toString());
+            if ("text/plain".equals(type) && (intent.getClipData().getItemAt(0) != null)) {
+                Uri uri = intent.getClipData().getItemAt(0).getUri();
+                try {
+                    String content = readFileContent(uri);
+                    txtInput.setText(content);
+                } catch (IOException e) {
+                    //Some log, Alert or Toast goes here
+                }
+            }
+            else if ("text/plain".equals(type)) {
                 handleSendText(intent);
+                Log.d("WordcloudActivity", "UriIntent: " + intent.toString());
             }
         }
         if (Intent.ACTION_VIEW.equals(action) && type != null) {
@@ -102,7 +113,7 @@ public class WordcloudActivity extends AppCompatActivity implements
 
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (sharedText != null && intent.getType().equals(Intent.ACTION_SEND)) {
+        if (sharedText != null) {
             txtInput.setText(sharedText);
         }
 
