@@ -68,7 +68,6 @@ public class WordcloudActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-        Log.d("WordcloudActivity", "intent: " + intent.toString());
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             Log.d("WordcloudActivity", "intentData: " + intent.getClipData().getItemAt(0).toString());
