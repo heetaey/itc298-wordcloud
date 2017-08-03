@@ -1,51 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <TextView
         android:id="@+id/inputTxtView"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="11dp"
+        android:layout_marginLeft="10sp"
         android:text="@string/inputTitle"
         android:textAllCaps="true"
         android:textSize="18sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp" />
 
-    <EditText
-        android:id="@+id/txtInput"
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/textContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
-        android:ems="10"
-        android:lines="6"
-        android:inputType="textMultiLine"
-        android:layout_alignTop="@+id/inputTxtView"
-        android:layout_alignParentStart="true"
-        tools:ignore="LabelFor" />
+        app:counterEnabled="true"
+        app:counterMaxLength="1000"
+        android:layout_below="@+id/inputTxtView"
+        android:layout_alignParentStart="true">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/txtInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/inputTxtView"
+            android:layout_marginTop="28dp"
+            android:ems="10"
+            android:scrollbars="vertical"
+            android:inputType="textMultiLine"
+            android:lines="6"
+            android:fadeScrollbars="false"
+             />
+    </android.support.design.widget.TextInputLayout>
+
+    <Button
+        android:id="@+id/clearInputButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/clearInput"
+        android:layout_below="@+id/textContainer"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:id="@+id/openFileButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/openFileButton"
+        android:layout_below="@+id/textContainer"
+        android:layout_toStartOf="@+id/generateButton" />
 
     <Button
         android:id="@+id/generateButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/generate"
-        android:layout_marginTop="17dp"
-        android:layout_below="@+id/txtInput"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="20dp" />
+        android:layout_below="@+id/textContainer"
+        android:layout_alignParentEnd="true" />
+
+
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_below="@+id/clearInputButton"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/generateButton"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical">
+        android:layout_marginTop="20dp">
 
         <TextView
             android:id="@+id/mostWord"
