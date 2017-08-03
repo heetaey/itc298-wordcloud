@@ -23,6 +23,10 @@
                 <data android:mimeType="text/*" />
             </intent-filter>
             </activity>
+        <activity
+            android:name=".WordCloudOutput"
+            android:label="output">
+        </activity>
 
         <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     </application>
