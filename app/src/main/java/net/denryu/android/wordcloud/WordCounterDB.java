@@ -20,22 +20,13 @@ public class WordCounterDB {
 
     //database constants
     public static final String DB_NAME = "wordcloud.db";
-    public static final int DB_VERSION = 7;
+    public static final int DB_VERSION = 8;
 
     //table constants
     public static final String WORDS_TABLE = "words";
     public static final String CLOUDS_TABLE = "clouds";
 
-    //column constants
-//    public static final String WORD_ID = "_id";
-//    public static final int WORD_ID_COL = 0;
-
-
-    //table constants
-    public static final String WORDS_TABLE = "words";
-    public static final String CLOUDS_TABLE = "clouds";
-
-    //column constants
+     //column constants
     public static final String WORD_ID = "_id";
     public static final int WORD_ID_COL = 0;
 
@@ -44,46 +35,6 @@ public class WordCounterDB {
 
     public static final String COUNT = "count";
     public static final int COUNT_COL = 2;
-
-    //this column keeps track of how many text imports contained at least 1 instance of this word
-    public static final String WORDS_CLOUD_ID = "cloud_id";
-    public static final int WORDS_CLOUD_ID_COL = 3;
-
-    public static final String CLOUD_ID = "_id";
-    public static final int CLOUD_ID_COL = 0;
-
-    public static final String USER = "user";
-    public static final String WORDCLOUD_VERSION = "wordcloud_version";
-    public static final String CREATED_DATE = "created_date_millis";
-    public static final String USER_LOCATION = "user_location";
-    public static final String TEXT_SOURCE = "text_source";
-
-    //db command constants
-    public static final String CREATE_WORDS_TABLE =
-            "CREATE TABLE " + WORDS_TABLE + " (" +
-                    WORD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
-                    ", " + WORD + " TEXT" +
-                    ", " + COUNT + " INTEGER NOT NULL" +
-                    ", " + WORDS_CLOUD_ID + " INTEGER NOT NULL" +
-                    ", FOREIGN KEY(" + WORDS_CLOUD_ID + ") REFERENCES " + CLOUDS_TABLE + "(" + CLOUD_ID + ")" +
-//                    IMPORT_COUNT + ", INTEGER NOT NULL" +
-                    ");";
-
-    //db command constants
-    public static final String CREATE_CLOUDS_TABLE =
-            "CREATE TABLE " + CLOUDS_TABLE + " (" +
-                    CLOUD_ID + " INTEGER PRIMARY KEY AUTOINCREMENT" +
-                    ", " + USER + " TEXT" +
-                    ", " + WORDCLOUD_VERSION + " TEXT" +
-                    ", " + CREATED_DATE + " INTEGER NOT NULL" +
-                    ", " + USER_LOCATION + " TEXT" +
-                    ", " + TEXT_SOURCE + " TEXT" +
-                    ");";
-
-    public static final String DROP_WORDS_TABLE =
-            "DROP TABLE IF EXISTS " + WORDS_TABLE;
-    public static final String DROP_CLOUDS_TABLE =
-            "DROP TABLE IF EXISTS " + CLOUDS_TABLE;
 
     //this column keeps track of how many text imports contained at least 1 instance of this word
     public static final String WORDS_CLOUD_ID = "cloud_id";
@@ -176,8 +127,6 @@ public class WordCounterDB {
 
         long rowID = db.insert(CLOUDS_TABLE, null, cv);
 
-//        db.update(WORDS_TABLE, cv, String.format("%s = ?", WORD), new String[]{word});
-//        db.replace()
         Log.d("WordCounter", "Added cloud at row " + rowID + " using Wordcloud version " + versionCode);
         this.closeDB();
         return rowID;
@@ -188,14 +137,11 @@ public class WordCounterDB {
         ContentValues cv = new ContentValues();
         cv.put(WORD, word);
         cv.put(COUNT, count);
-//        cv.put(MODIFIED_DATE, System.currentTimeMillis());
         cv.put(WORDS_CLOUD_ID, cloudId);
         this.openWriteableDB();
 
         long rowID = db.insert(WORDS_TABLE, null, cv);
 
-//        db.update(WORDS_TABLE, cv, String.format("%s = ?", WORD), new String[]{word});
-//        db.replace()
         Log.d("WordCounter", "Added to words table at row " + rowID + ": word " + word + " with count of " + count);
         this.closeDB();
         return rowID;
@@ -205,9 +151,7 @@ public class WordCounterDB {
     public void clearDB() {
         this.openWriteableDB();
 
-        db.execSQL(WordCounterDB.DROP_WORDS_TABLE);
-        db.execSQL(WordCounterDB.DROP_CLOUDS_TABLE);
-        Log.d("WordCounter", "words and clouds tables dropped from db.");
+
         db.execSQL(WordCounterDB.DROP_WORDS_TABLE);
         db.execSQL(WordCounterDB.DROP_CLOUDS_TABLE);
         Log.d("WordCounter", "words and clouds tables dropped from db.");
@@ -230,8 +174,6 @@ public class WordCounterDB {
 //            db.execSQL("INSERT INTO " + WORDS_TABLE + " VALUES (1, 0, 100.00, 0.2)");
 //            db.execSQL("INSERT INTO " + WORDS_TABLE + " VALUES (2, 1, 10.98, 0.15)");
 
-            db.execSQL(CREATE_WORDCOUNTER_TABLE);
-
             Log.d("WordCounter", "Wordcounter database table created");
         }
 
@@ -239,11 +181,6 @@ public class WordCounterDB {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 
             Log.d("WordCounter", "Upgrading db from version " + oldVersion + " to " + newVersion);
-
-            db.execSQL(WordCounterDB.DROP_WORDS_TABLE);
-            db.execSQL(WordCounterDB.DROP_CLOUDS_TABLE);
-
-            db.execSQL(WordCounterDB.DROP_WORDCOUNTER_TABLE);
 
             db.execSQL(WordCounterDB.DROP_WORDS_TABLE);
             db.execSQL(WordCounterDB.DROP_CLOUDS_TABLE);
