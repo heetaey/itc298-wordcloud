@@ -21,6 +21,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 
 /**
  * Created by hsMacbook on 2017. 7. 17..
@@ -67,12 +68,26 @@ public class WordcloudActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
+        Log.d("WordcloudActivity", "intent: " + intent.toString());
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type)) {
                 handleSendText(intent);
             }
         }
+        if (Intent.ACTION_VIEW.equals(action) && type != null) {
+            if (intent.getData() != null) {
+                Uri uri = intent.getData();
+
+                try {
+                    String content = readFileContent(uri);
+                    txtInput.setText(content);
+                } catch (IOException e) {
+                    //Some log, Alert or Toast goes here
+                }
+
+            }
+            }
     }
 
     @Override
@@ -87,10 +102,13 @@ public class WordcloudActivity extends AppCompatActivity implements
 
     void handleSendText(Intent intent) {
         String sharedText = intent.getStringExtra(Intent.EXTRA_TEXT);
-        if (sharedText != null) {
+        if (sharedText != null && intent.getType().equals(Intent.ACTION_SEND)) {
             txtInput.setText(sharedText);
         }
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
