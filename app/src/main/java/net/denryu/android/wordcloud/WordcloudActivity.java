@@ -180,7 +180,7 @@ public class WordcloudActivity extends AppCompatActivity implements
 
     public void populateResults() {
 
-        wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
+       wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
 
 
         wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
