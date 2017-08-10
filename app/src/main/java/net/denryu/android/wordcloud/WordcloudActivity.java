@@ -31,6 +31,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 
 /**
  * Created by hsMacbook on 2017. 7. 17..
@@ -86,10 +87,34 @@ public class WordcloudActivity extends AppCompatActivity implements
         String type = intent.getType();
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
-            if ("text/plain".equals(type)) {
+            Log.d("WordcloudActivity", "intentData: " + intent.getClipData().getItemAt(0).toString());
+            if ("text/plain".equals(type) && (intent.getClipData().getItemAt(0) != null)) {
+                Uri uri = intent.getClipData().getItemAt(0).getUri();
+                try {
+                    String content = readFileContent(uri);
+                    txtInput.setText(content);
+                } catch (IOException e) {
+                    //Some log, Alert or Toast goes here
+                }
+            }
+            else if ("text/plain".equals(type)) {
                 handleSendText(intent);
+                Log.d("WordcloudActivity", "UriIntent: " + intent.toString());
             }
         }
+        if (Intent.ACTION_VIEW.equals(action) && type != null) {
+            if (intent.getData() != null) {
+                Uri uri = intent.getData();
+
+                try {
+                    String content = readFileContent(uri);
+                    txtInput.setText(content);
+                } catch (IOException e) {
+                    //Some log, Alert or Toast goes here
+                }
+
+            }
+            }
     }
 
     @Override
@@ -107,7 +132,10 @@ public class WordcloudActivity extends AppCompatActivity implements
         if (sharedText != null) {
             txtInput.setText(sharedText);
         }
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
