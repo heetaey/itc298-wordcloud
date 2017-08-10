@@ -17,6 +17,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -57,10 +60,17 @@ public class WordcloudActivity extends AppCompatActivity implements
     private WordCounter wordCounter;
     private WordCounterDB wordCounterDB;
 
+    private String advertisingId;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordcloud_activity);
+
+        Runnable getAdvertIdTask = () ->  {
+            setAdvertId();
+        };
+        new Thread(getAdvertIdTask).start();
 
         txtInput = (EditText) findViewById(R.id.txtInput);
         generateButton = (Button) findViewById(R.id.generateButton);
@@ -135,8 +145,6 @@ public class WordcloudActivity extends AppCompatActivity implements
 
     }
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -207,7 +215,8 @@ public class WordcloudActivity extends AppCompatActivity implements
     }
 
     public void populateResults() {
-        wordCounterDB.storeInput(wordCounter.getWordCountMap(), null, null, null);
+        Log.d("WordCounter", "advertId in populateResults: " + advertisingId);
+        wordCounterDB.storeInput(wordCounter.getWordCountMap(), advertisingId, null, null);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
@@ -257,6 +266,36 @@ public class WordcloudActivity extends AppCompatActivity implements
         }
         inStream.close();
         return stringBuilder.toString();
+    }
+
+    private void setAdvertId() {
+        //retrieve advertising ID
+//        AdvertisingIdClient.Info idInfo = null;
+
+
+        AdvertisingIdClient.Info id2Info = null;
+        try {
+            id2Info = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
+//                    Log.d("wordcounter", idInfo.toString());
+            } catch (GooglePlayServicesNotAvailableException|GooglePlayServicesRepairableException e) {
+                Log.d("wordcounter", "inside google error");
+                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d("wordcounter", "inside general error " + e.getMessage());
+                e.printStackTrace();
+            }
+            try{
+                advertisingId = id2Info.getId();
+            }catch (Exception e){
+                Log.d("wordcounter", "inside getId error");
+                e.printStackTrace();
+            }
+            Log.d("wordcounter", "AdvertID is: " + advertisingId);
+
+    }
+
+    private void updateLocation() {
+
     }
 
 }
