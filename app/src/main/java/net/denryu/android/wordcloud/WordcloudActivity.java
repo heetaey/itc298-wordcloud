@@ -207,11 +207,7 @@ public class WordcloudActivity extends AppCompatActivity implements
     }
 
     public void populateResults() {
-
-       wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
-
-
-        wordCounterDB.insertWords(wordCounter.getWordCountMap(), null, null, null);
+        wordCounterDB.storeInput(wordCounter.getWordCountMap(), null, null, null);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
