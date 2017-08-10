@@ -17,16 +17,19 @@ import java.util.Random;
 public class WordCloudOutput extends AppCompatActivity {
     private static final String TAG = "WordCloudActivity";
     List<WordCloud> list ;
-    String text = "word word word word word word word word word word word word word word word word word word different";
+    String text = "one two two three three three four four four four five five five five six six six six six six ";
+    WordCounter wordCounter = new WordCounter();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordcloud_output);
+        wordCounter.countWords(text);
         generateRandomText();
+        list = wordCounter.deriveMostCommonWordsStat();
         WordCloudView wordCloud = (WordCloudView) findViewById(R.id.wordCloud);
         wordCloud.setDataSet(list);
-        wordCloud.setSize(300,300);
+        wordCloud.setSize(600,600);
         wordCloud.setColors(ColorTemplate.MATERIAL_COLORS);
         wordCloud.notifyDataSetChanged();
 

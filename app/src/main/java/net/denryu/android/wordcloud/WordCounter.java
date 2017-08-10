@@ -5,6 +5,8 @@ package net.denryu.android.wordcloud;
 //import java.util.Set;
 //import java.util.TreeMap;
 //import java.io.*;
+import net.alhazmy13.wordcloud.WordCloud;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.regex.Pattern;
@@ -60,6 +62,19 @@ public class WordCounter {
 
         return foundWord.isPresent() ? foundWord.get() : new AbstractMap.SimpleEntry<>("[no words entered]",0);
     }
+
+    protected List<WordCloud> deriveMostCommonWordsStat()
+    {
+        Stream<Map.Entry<String,Integer>> wordStream = wordCountMap.entrySet().stream();
+        ArrayList<WordCloud> cloudList = new ArrayList<>();
+
+        wordStream.sorted(Comparator.comparingInt(Map.Entry<String,Integer>::getValue).reversed())
+                .limit(12).forEach(word -> cloudList.add(new WordCloud(word.getKey(),word.getValue())));
+
+
+        return cloudList;
+    }
+
 
     private void setMostCommonWord() {
         Map.Entry<String, Integer> mostCommonWordStat = this.deriveMostCommonWordStat();
