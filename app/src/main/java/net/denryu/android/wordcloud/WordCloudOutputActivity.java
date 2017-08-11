@@ -1,7 +1,6 @@
 package net.denryu.android.wordcloud;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,8 +15,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
+
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
 import net.alhazmy13.wordcloud.ColorTemplate;
 import net.alhazmy13.wordcloud.WordCloud;
@@ -42,6 +44,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     private TextView totalCountResult;
     private File imagePath;
 
+    public String advertisingId;
     private WordCounter wordCounter;
     private WordCounterDB wordCounterDB;
 
@@ -76,6 +79,10 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordcloud_output);
 
+        Runnable getAdvertIdTask = () ->  {
+            setAdvertId();
+        };
+        new Thread(getAdvertIdTask).start();
         //This is for asking user granting permission to access the storage (after SDK23)
         isStoragePermissionGranted();
 
@@ -104,7 +111,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     }
 
     public void populateResults() {
-        wordCounterDB.storeInput(wordCounter.getWordCountMap(), null, null, null);
+        wordCounterDB.storeInput(wordCounter.getWordCountMap(), advertisingId, null, null);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
@@ -181,6 +188,32 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
         sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
         startActivity(Intent.createChooser(sharingIntent, "Share via"));
+    }
+
+    private void setAdvertId() {
+        //retrieve advertising ID
+//        AdvertisingIdClient.Info idInfo = null;
+
+
+        AdvertisingIdClient.Info id2Info = null;
+        try {
+            id2Info = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
+//                    Log.d("wordcounter", idInfo.toString());
+        } catch (GooglePlayServicesNotAvailableException |GooglePlayServicesRepairableException e) {
+            Log.d("wordcounter", "inside google error");
+            e.printStackTrace();
+        } catch (Exception e) {
+            Log.d("wordcounter", "inside general error " + e.getMessage());
+            e.printStackTrace();
+        }
+        try{
+            advertisingId = id2Info.getId();
+        }catch (Exception e){
+            Log.d("wordcounter", "inside getId error");
+            e.printStackTrace();
+        }
+        Log.d("wordcounter", "AdvertID is: " + advertisingId);
+
     }
 
 }
