@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class WordCloudActivity extends AppCompatActivity implements
+public class WordcloudActivity extends AppCompatActivity implements
         OnClickListener {
 
     private static final int OPEN_DOCUMENT_REQUEST = 1;
