@@ -1,5 +1,5 @@
 ## ITC298: Mobile App Development Capstone 2017: Word Cloud 
-#### Team 2 Michael Archambault, Turner Tackitt, Joseph Wanderer, Heetae Yang
+#### Team 2: [Michael Archambault](https://github.com/mikearchie), Turner Tackitt, Joseph Wanderer, [Heetae Yang](https://github.com/heetaey)
 
 ### Details
 - This application will allows the user to generate out put and visually present data.
