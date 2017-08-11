@@ -18,6 +18,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.ads.identifier.AdvertisingIdClient;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,9 +41,15 @@ public class WordCloudActivity extends AppCompatActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordcloud_activity);
 
+        Runnable getAdvertIdTask = () ->  {
+            setAdvertId();
+        };
+        new Thread(getAdvertIdTask).start();
+
         txtInput = (EditText) findViewById(R.id.txtInput);
-        generateImage = (Button) findViewById(R.id.generateImage);
-        generateImage.setOnClickListener(this);
+        generateButton = (Button) findViewById(R.id.generateButton);
+        generateButton.setOnClickListener(this);
+
         openFileButton = (Button) findViewById(R.id.openFileButton);
         openFileButton.setOnClickListener(this);
         clearInputButton = (Button) findViewById(R.id.clearInputButton);
@@ -51,7 +60,8 @@ public class WordCloudActivity extends AppCompatActivity implements
         String type = intent.getType();
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
-            Log.d("WordCloudActivity", "intentData: " + intent.getClipData().getItemAt(0).toString());
+            Log.d("WordcloudActivity", "intentData: " + intent.getClipData().getItemAt(0).toString());
+
             if ("text/plain".equals(type) && (intent.getClipData().getItemAt(0) != null)) {
                 Uri uri = intent.getClipData().getItemAt(0).getUri();
                 try {
@@ -60,6 +70,7 @@ public class WordCloudActivity extends AppCompatActivity implements
                 } catch (IOException e) {
                     //Some log, Alert or Toast goes here
                 }
+
             } else if ("text/plain".equals(type)) {
                 handleSendText(intent);
                 Log.d("WordCloudActivity", "UriIntent: " + intent.toString());
@@ -77,6 +88,7 @@ public class WordCloudActivity extends AppCompatActivity implements
                 }
 
             }
+
         }
     }
 
@@ -95,6 +107,7 @@ public class WordCloudActivity extends AppCompatActivity implements
         if (sharedText != null) {
             txtInput.setText(sharedText);
         }
+
     }
 
     @Override
@@ -107,6 +120,7 @@ public class WordCloudActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+
             case R.id.about:
                 new AlertDialog.Builder(this).setTitle("About")
                         .setMessage("This will have our ABOUT messages")
@@ -123,6 +137,7 @@ public class WordCloudActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
             case R.id.generateImage:
                 Intent i = new Intent(WordCloudActivity.this, WordCloudOutputActivity.class);
                 i.putExtra("txtInput", txtInput.getText().toString());
@@ -171,6 +186,7 @@ public class WordCloudActivity extends AppCompatActivity implements
         if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
                 Uri uri = resultData.getData();
+
                 try {
                     String content = readFileContent(uri);
                     txtInput.setText(content);
@@ -192,5 +208,35 @@ public class WordCloudActivity extends AppCompatActivity implements
         }
         inStream.close();
         return stringBuilder.toString();
+    }
+
+    private void setAdvertId() {
+        //retrieve advertising ID
+//        AdvertisingIdClient.Info idInfo = null;
+
+
+        AdvertisingIdClient.Info id2Info = null;
+        try {
+            id2Info = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
+//                    Log.d("wordcounter", idInfo.toString());
+            } catch (GooglePlayServicesNotAvailableException|GooglePlayServicesRepairableException e) {
+                Log.d("wordcounter", "inside google error");
+                e.printStackTrace();
+            } catch (Exception e) {
+                Log.d("wordcounter", "inside general error " + e.getMessage());
+                e.printStackTrace();
+            }
+            try{
+                advertisingId = id2Info.getId();
+            }catch (Exception e){
+                Log.d("wordcounter", "inside getId error");
+                e.printStackTrace();
+            }
+            Log.d("wordcounter", "AdvertID is: " + advertisingId);
+
+    }
+
+    private void updateLocation() {
+
     }
 }

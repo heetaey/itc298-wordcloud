@@ -120,7 +120,7 @@ public class WordCounterDB {
 
         long rowID = db.insert(INPUTS_TABLE, null, cv);
 
-        Log.d("WordCounter", "Added to " + WORDS_TABLE + "table at row " + rowID + " using Wordcloud version " + versionCode);
+        Log.d("WordCounter", "Added to " + INPUTS_TABLE + " table at row " + rowID + " using Wordcloud version " + versionCode);
         return rowID;
     }
 
