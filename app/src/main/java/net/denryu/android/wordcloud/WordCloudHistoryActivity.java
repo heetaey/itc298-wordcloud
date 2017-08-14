@@ -2,6 +2,7 @@ package net.denryu.android.wordcloud;
 
 import android.app.ListActivity;
 import android.app.LoaderManager;
+import android.graphics.Bitmap;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ import static android.R.id.list;
 public class WordCloudHistoryActivity extends ListActivity {
 
     private ListView historyListView;
+    WordCounterDB db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,7 @@ public class WordCloudHistoryActivity extends ListActivity {
         setContentView(R.layout.wordcloudhistory_activity);
         historyListView = (ListView) findViewById(android.R.id.list);
 
-        WordCounterDB db = new WordCounterDB(this);
+        db = new WordCounterDB(this);
         ArrayList<TextInput> textInputs = db.getTextInputs();
 
 
@@ -49,7 +51,26 @@ public class WordCloudHistoryActivity extends ListActivity {
 //                historyListView.
 //            }
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_word_history, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
     
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.item_clear_history:
+                db.clearDB();
+                break;
+            case R.id.item_history:
+                //go to wordcloudhistory_activity
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
 
 //public class WordCloudHistoryActivity extends ListActivity
