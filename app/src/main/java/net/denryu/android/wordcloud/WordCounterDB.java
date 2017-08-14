@@ -3,10 +3,12 @@ package net.denryu.android.wordcloud;
 import android.content.ContentValues;
 import android.content.Context;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.Map;
 
 public class WordCounterDB {
@@ -21,19 +23,29 @@ public class WordCounterDB {
 
      //column constants for WORDS_TABLE
     public static final String WORD_ID = "_id";
+    public static final int WORD_ID_COL = 0;
     public static final String WORD = "word";
+    public static final int WORD_COL = 1;
     public static final String COUNT = "count";
+    public static final int COUNT_COL = 2;
+
 
     //this column keeps track of how many text imports contained at least 1 instance of this word
     public static final String WORDS_PARENT_INPUT_ID = "input_id";
 
     //columns for INPUTS_TABLE
     public static final String INPUT_ID = "_id";
+    public static final int INPUT_ID_COL = 0;
     public static final String USER = "user";
+    public static final int USER_COL = 1;
     public static final String WORDCLOUD_VERSION = "wordcloud_version";
+    public static final int WORDCLOUD_VERSION_COL = 2;
     public static final String CREATED_DATE = "created_date_millis";
+    public static final int CREATED_DATE_COL = 3;
     public static final String USER_LOCATION = "user_location";
+    public static final int USER_LOCATION_COL = 4;
     public static final String TEXT_SOURCE = "text_source";
+    public static final int TEXT_SOURCE_COL = 5;
 
     //db command constants
     private static final String CREATE_WORDS_TABLE =
@@ -83,7 +95,7 @@ public class WordCounterDB {
     }
 
     //populate database with new words and counts
-    //returns the ID of the input row
+    //returns the ID of the input row. textInput must have non-null WordCounter
     public long storeInput(TextInput textInput)
             /*Map<String, Integer> wordCountMap,
                             String advertisingId,
@@ -97,10 +109,11 @@ public class WordCounterDB {
         this.openWriteableDB();
 
         //insert parent input into INPUTS_TABLE
-        inputId = insertInput(textInput.getAdvertisingId(), textInput.getInputTextSource(), textInput.getUserLocation());
+        inputId = insertInputRow(textInput.getUserId(), textInput.getWordCloudVersionCode(),
+                textInput.getCreateDateMillis(), textInput.getUserLocation(), textInput.getInputTextSource());
         //insert each child words into WORDS_TABLE
         for (Map.Entry<String, Integer> entry : textInput.getWordCounter().getWordCountMap().entrySet()) {
-            lastRowID = insertWord(entry.getKey(), entry.getValue(), inputId);
+            lastRowID = insertWordRow(entry.getKey(), entry.getValue(), inputId);
         }
 
         //close database
@@ -110,15 +123,15 @@ public class WordCounterDB {
     }
 
     //insert a new input, return _id identifier (for use in insertWord)
-    private long insertInput(String advertisingId, String textSource, String userLocation) {
-        int versionCode = BuildConfig.VERSION_CODE;
+    private long insertInputRow(String userId, int versionCode, long createdDateMillis,
+                             String textSource, String userLocation) {
 
         ContentValues cv = new ContentValues();
 
-        cv.put(CREATED_DATE, System.currentTimeMillis());
-        if (versionCode > 0) cv.put(WORDCLOUD_VERSION, versionCode);
+        cv.put(CREATED_DATE, createdDateMillis);
+        cv.put(WORDCLOUD_VERSION, versionCode);
         if (userLocation != null) cv.put(USER_LOCATION, userLocation);
-        if (advertisingId != null) cv.put(USER, advertisingId);
+        if (userId != null) cv.put(USER, userId);
 
         long rowID = db.insert(INPUTS_TABLE, null, cv);
 
@@ -127,7 +140,7 @@ public class WordCounterDB {
     }
 
     //insert a single word & count row
-    private long insertWord(String word, int count, long inputId) {
+    private long insertWordRow(String word, int count, long inputId) {
         ContentValues cv = new ContentValues();
         cv.put(WORD, word);
         cv.put(COUNT, count);
@@ -139,10 +152,60 @@ public class WordCounterDB {
         return rowID;
     }
 
-//    public TextInput retrieveTextInput(long inputId) {
-//
-//    }
+    //retrive a single TextInput row from INPUTS_TABLE
+    public TextInput getTextInput(long inputId) {
 
+        String where = INPUT_ID + "= ?";
+        String[] whereArgs = {Long.toString(inputId)};
+
+        this.openReadableDB();
+        Cursor cursor = db.query(INPUTS_TABLE, null, where, whereArgs, null, null, null, null);
+        cursor.moveToFirst();
+        TextInput ti = getTextInputFromCursor(cursor);
+        if (cursor != null)
+            cursor.close();
+        this.closeDB();
+
+        return ti;
+    }
+
+    //retrieve all the TextInputs stored in INPUTS_TABLE
+    public ArrayList<TextInput> getTextInputs() {
+
+        String orderBy = CREATED_DATE + " DESC";
+
+        this.openReadableDB();
+        Cursor cursor = db.query(INPUTS_TABLE, null, null, null, null, null, orderBy, null);
+        ArrayList<TextInput> textInputs = new ArrayList<TextInput>();
+        while (cursor.moveToNext())
+            textInputs.add(getTextInputFromCursor(cursor));
+
+        if (cursor != null)
+            cursor.close();
+        this.closeDB();
+
+        return textInputs;
+
+    }
+
+    private static TextInput getTextInputFromCursor(Cursor cursor) {
+        if (cursor == null || cursor.getCount() == 0)
+            return null;
+        else {
+            try {
+                TextInput textInput = new TextInput(
+                        cursor.getLong(INPUT_ID_COL),
+                        cursor.getString(USER_COL),
+                        cursor.getInt(WORDCLOUD_VERSION_COL),
+                        cursor.getLong(CREATED_DATE_COL),
+                        cursor.getString(USER_LOCATION_COL),
+                        cursor.getString(TEXT_SOURCE_COL));
+                return textInput;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+    }
 
     //drop database tables, but maintain database definition
     public void clearDB() {

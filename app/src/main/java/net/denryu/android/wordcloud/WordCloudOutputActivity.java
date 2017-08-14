@@ -113,7 +113,12 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     }
 
     public void populateResults() {
-        TextInput currInput = new TextInput(wordCounter, advertisingId, null, null);
+        int versionCode = 0;
+        versionCode = BuildConfig.VERSION_CODE;
+        long currDate = System.currentTimeMillis();
+
+        TextInput currInput = new TextInput(advertisingId, versionCode, currDate, null, null, wordCounter);
+
         wordCounterDB.storeInput(currInput);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
