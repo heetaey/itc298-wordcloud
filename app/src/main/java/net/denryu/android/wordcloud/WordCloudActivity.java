@@ -119,7 +119,9 @@ public class WordCloudActivity extends AppCompatActivity implements
                         }).show();
                 break;
             case R.id.item_history:
-                //go to wordcloudhistory_activity
+                //start wordcloudhistory_activity
+                Intent i = new Intent(WordCloudActivity.this, WordCloudHistoryActivity.class);
+                startActivity(i);
                 break;
 
         }
