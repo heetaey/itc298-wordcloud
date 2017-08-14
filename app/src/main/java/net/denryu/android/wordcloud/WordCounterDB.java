@@ -84,10 +84,12 @@ public class WordCounterDB {
 
     //populate database with new words and counts
     //returns the ID of the input row
-    public long storeInput(Map<String, Integer> wordCountMap,
+    public long storeInput(TextInput textInput)
+            /*Map<String, Integer> wordCountMap,
                             String advertisingId,
                             String inputTextSource,
-                            String userLocation) {
+                            String userLocation)
+                            */ {
         long lastRowID = 0;
         long inputId = 0;
 
@@ -95,9 +97,9 @@ public class WordCounterDB {
         this.openWriteableDB();
 
         //insert parent input into INPUTS_TABLE
-        inputId = insertInput(advertisingId, inputTextSource, userLocation);
+        inputId = insertInput(textInput.getAdvertisingId(), textInput.getInputTextSource(), textInput.getUserLocation());
         //insert each child words into WORDS_TABLE
-        for (Map.Entry<String, Integer> entry : wordCountMap.entrySet()) {
+        for (Map.Entry<String, Integer> entry : textInput.getWordCounter().getWordCountMap().entrySet()) {
             lastRowID = insertWord(entry.getKey(), entry.getValue(), inputId);
         }
 
@@ -136,6 +138,11 @@ public class WordCounterDB {
         Log.d("WordCounter", "Added to " + WORDS_TABLE + " table at row " + rowID + ": " + word + " with count of " + count);
         return rowID;
     }
+
+//    public TextInput retrieveTextInput(long inputId) {
+//
+//    }
+
 
     //drop database tables, but maintain database definition
     public void clearDB() {

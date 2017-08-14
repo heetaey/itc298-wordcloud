@@ -79,10 +79,12 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordcloud_output);
 
+        //start thread to retrieve advertising ID for later use
         Runnable getAdvertIdTask = () ->  {
             setAdvertId();
         };
         new Thread(getAdvertIdTask).start();
+
         //This is for asking user granting permission to access the storage (after SDK23)
         isStoragePermissionGranted();
 
@@ -111,7 +113,8 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     }
 
     public void populateResults() {
-        wordCounterDB.storeInput(wordCounter.getWordCountMap(), advertisingId, null, null);
+        TextInput currInput = new TextInput(wordCounter, advertisingId, null, null);
+        wordCounterDB.storeInput(currInput);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
