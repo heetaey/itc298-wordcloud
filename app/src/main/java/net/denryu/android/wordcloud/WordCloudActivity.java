@@ -108,7 +108,7 @@ public class WordCloudActivity extends AppCompatActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
 
-            case R.id.about:
+            case R.id.item_about:
                 new AlertDialog.Builder(this).setTitle("About")
                         .setMessage("This will have our ABOUT messages")
                         .setNeutralButton("OK", new DialogInterface.OnClickListener() {
@@ -117,6 +117,11 @@ public class WordCloudActivity extends AppCompatActivity implements
 
                             }
                         }).show();
+                break;
+            case R.id.item_history:
+                //go to wordcloudhistory_activity
+                break;
+
         }
         return super.onOptionsItemSelected(item);
     }

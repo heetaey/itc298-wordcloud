@@ -151,8 +151,8 @@ public class WordCloudOutputActivity extends AppCompatActivity {
                 saveBitmap(bitmap);
                 shareIt();
                 break;
-            case R.id.item_clear_history:
-                clearHistory();
+            case R.id.item_history:
+                //go to wordcloudhistory_activity
                 break;
         }
         return super.onOptionsItemSelected(item);

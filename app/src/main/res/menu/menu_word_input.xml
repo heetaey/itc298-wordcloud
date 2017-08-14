@@ -2,7 +2,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/about"
-        android:title="About"
+        android:id="@+id/item_history"
+        android:title="History"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/item_about"
+        android:title="About"
+        app:showAsAction="ifRoom" />
+
 </menu>
