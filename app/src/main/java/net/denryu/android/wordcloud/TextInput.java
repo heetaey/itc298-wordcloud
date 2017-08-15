@@ -1,5 +1,7 @@
 package net.denryu.android.wordcloud;
 
+import android.util.Log;
+
 import java.util.Date;
 
 /**
@@ -20,7 +22,7 @@ public class TextInput {
                      WordCounter wc) {
 
         this.userId = userId;
-        this.inputTextSource = inputTextSource == null ? "" : inputTextSource;
+        this.inputTextSource = (inputTextSource == null) ? "" : inputTextSource;
         this.userLocation = userLocation;
         this.wordCounter = wc;
     }
@@ -30,7 +32,7 @@ public class TextInput {
                      String userLocation) {
 
         this.userId = userId;
-        this.inputTextSource = inputTextSource == null ? "" : inputTextSource;
+        this.inputTextSource = (inputTextSource == null) ? "" : inputTextSource;
         this.userLocation = userLocation;
     }
 
@@ -41,7 +43,7 @@ public class TextInput {
         this.userId = userId;
         this.wordCloudVersionCode = wordCloudVersionCode;
         this.createDateMillis = createDateMillis;
-        this.inputTextSource = inputTextSource == null ? "" : inputTextSource;
+        this.inputTextSource = (inputTextSource == null) ? "" : inputTextSource;
         this.userLocation = userLocation;
     }
 
@@ -52,7 +54,7 @@ public class TextInput {
         this.userId = userId;
         this.wordCloudVersionCode = wordCloudVersionCode;
         this.createDateMillis = createDateMillis;
-        this.inputTextSource = inputTextSource == null ? "" : inputTextSource;
+        this.inputTextSource = (inputTextSource == null) ? "" : inputTextSource;
         this.userLocation = userLocation;
         this.wordCounter = wc;
     }
@@ -63,7 +65,7 @@ public class TextInput {
         this.userId = userId;
         this.wordCloudVersionCode = wordCloudVersionCode;
         this.createDateMillis = createDateMillis;
-        this.inputTextSource = inputTextSource == null ? "" : inputTextSource;
+        this.inputTextSource = (inputTextSource == null) ? "" : inputTextSource;
         this.userLocation = userLocation;
     }
 
@@ -73,7 +75,7 @@ public class TextInput {
         this.userId = userId;
         this.wordCloudVersionCode = wordCloudVersionCode;
         this.createDateMillis = createDateMillis;
-        this.inputTextSource = inputTextSource == null ? "" : inputTextSource;
+        this.inputTextSource = (inputTextSource == null) ? "" : inputTextSource;
         this.userLocation = userLocation;
         this.wordCounter = wc;
     }
@@ -89,7 +91,7 @@ public class TextInput {
     public String toString() {
         Date date = new Date(createDateMillis);
 
-        return date + " " + inputTextSource;
+        return date + " " + this.inputTextSource;
     }
 
 }

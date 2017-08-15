@@ -44,7 +44,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     private TextView totalCountResult;
     private File imagePath;
 
-    public String advertisingId;
+    public String advertisingId, textSource;
     private WordCounter wordCounter;
     private WordCounterDB wordCounterDB;
 
@@ -99,6 +99,11 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         Intent i = getIntent();
         String getText = i.getStringExtra("txtInput");
 
+        if (getText.length() > 13)
+            textSource = getText.substring(0, 12) + "...";
+        else
+            textSource = getText;
+
         wordCounter.countWords(getText);
         generateText();
         list = wordCounter.deriveMostCommonWordsStat();
@@ -117,7 +122,8 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         versionCode = BuildConfig.VERSION_CODE;
         long currDate = System.currentTimeMillis();
 
-        TextInput currInput = new TextInput(advertisingId, versionCode, currDate, null, null, wordCounter);
+        Log.d("Wordcounter", "textSource is: " + textSource);
+        TextInput currInput = new TextInput(advertisingId, versionCode, currDate, null, textSource, wordCounter);
 
         wordCounterDB.storeInput(currInput);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
@@ -160,7 +166,8 @@ public class WordCloudOutputActivity extends AppCompatActivity {
                 shareIt();
                 break;
             case R.id.item_history:
-                //go to wordcloudhistory_activity
+                Intent i = new Intent(WordCloudOutputActivity.this, WordCloudHistoryActivity.class);
+                startActivity(i);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -199,25 +206,20 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     }
 
     private void setAdvertId() {
-        //retrieve advertising ID
-//        AdvertisingIdClient.Info idInfo = null;
-
-
         AdvertisingIdClient.Info id2Info = null;
         try {
             id2Info = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
-//                    Log.d("wordcounter", idInfo.toString());
         } catch (GooglePlayServicesNotAvailableException |GooglePlayServicesRepairableException e) {
-            Log.d("wordcounter", "inside google error");
+            Log.d("wordcounter", "Google Play error: " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            Log.d("wordcounter", "inside general error " + e.getMessage());
+            Log.d("wordcounter", "Error setting advertId: " + e.getMessage());
             e.printStackTrace();
         }
         try{
             advertisingId = id2Info.getId();
         }catch (Exception e){
-            Log.d("wordcounter", "inside getId error");
+            Log.d("wordcounter", "error retrieving advertising ID: " + e.getMessage());
             e.printStackTrace();
         }
         Log.d("wordcounter", "AdvertID is: " + advertisingId);

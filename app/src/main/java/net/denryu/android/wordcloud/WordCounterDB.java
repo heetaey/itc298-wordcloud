@@ -15,7 +15,7 @@ public class WordCounterDB {
 
     //database constants
     public static final String DB_NAME = "wordcloud.db";
-    public static final int DB_VERSION = 11;
+    public static final int DB_VERSION = 12;
 
     //table constants
     public static final String WORDS_TABLE = "words";
@@ -110,7 +110,7 @@ public class WordCounterDB {
 
         //insert parent input into INPUTS_TABLE
         inputId = insertInputRow(textInput.getUserId(), textInput.getWordCloudVersionCode(),
-                textInput.getCreateDateMillis(), textInput.getUserLocation(), textInput.getInputTextSource());
+                textInput.getCreateDateMillis(), textInput.getInputTextSource(), textInput.getUserLocation());
         //insert each child words into WORDS_TABLE
         for (Map.Entry<String, Integer> entry : textInput.getWordCounter().getWordCountMap().entrySet()) {
             lastRowID = insertWordRow(entry.getKey(), entry.getValue(), inputId);
@@ -130,6 +130,7 @@ public class WordCounterDB {
 
         cv.put(CREATED_DATE, createdDateMillis);
         cv.put(WORDCLOUD_VERSION, versionCode);
+        cv.put(TEXT_SOURCE, textSource);
         if (userLocation != null) cv.put(USER_LOCATION, userLocation);
         if (userId != null) cv.put(USER, userId);
 
