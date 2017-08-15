@@ -99,8 +99,8 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         Intent i = getIntent();
         String getText = i.getStringExtra("txtInput");
 
-        if (getText.length() > 13)
-            textSource = getText.substring(0, 12) + "...";
+        if (getText.length() > 30)
+            textSource = getText.substring(0, 29) + "...";
         else
             textSource = getText;
 
@@ -109,7 +109,6 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         list = wordCounter.deriveMostCommonWordsStat();
         WordCloudView wordCloud = (WordCloudView) findViewById(R.id.wordCloud);
         wordCloud.setDataSet(list);
-        wordCloud.setSize(300, 350);
         wordCloud.setColors(ColorTemplate.MATERIAL_COLORS);
         wordCloud.notifyDataSetChanged();
 
