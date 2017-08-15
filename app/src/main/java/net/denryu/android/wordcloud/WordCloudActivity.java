@@ -107,7 +107,6 @@ public class WordCloudActivity extends AppCompatActivity implements
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
             case R.id.item_about:
                 new AlertDialog.Builder(this).setTitle("About")
                         .setMessage("This will have our ABOUT messages")
@@ -136,7 +135,6 @@ public class WordCloudActivity extends AppCompatActivity implements
                 break;
             case R.id.openFileButton:
                 openFile();
-//              openPDFDOC();
                 break;
             case R.id.clearInputButton:
                 new AlertDialog.Builder(this).
@@ -165,26 +163,17 @@ public class WordCloudActivity extends AppCompatActivity implements
         startActivityForResult(intent, OPEN_DOCUMENT_REQUEST);
     }
 
-//    private void openPDFDOC() {
-//        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        intent.setType("application/pdf");
-//        startActivityForResult(intent, LOAD_IMAGE_RESULTS);
-//    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultData) {
         if (requestCode == OPEN_DOCUMENT_REQUEST && resultCode == Activity.RESULT_OK) {
             if (resultData != null) {
                 Uri uri = resultData.getData();
-
                 try {
                     String content = readFileContent(uri);
                     txtInput.setText(content);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
             }
         }
     }

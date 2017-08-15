@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/WordCloud-HH/WordCloud-HH.iml" filepath="$PROJECT_DIR$/WordCloud-HH/WordCloud-HH.iml" />
-      <module fileurl="file://$PROJECT_DIR$/WordCloud-HH/WordCloud-HH.iml" filepath="$PROJECT_DIR$/WordCloud-HH/WordCloud-HH.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/itc298-wordcloud.iml" filepath="$PROJECT_DIR$/itc298-wordcloud.iml" />
     </modules>
