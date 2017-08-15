@@ -47,6 +47,7 @@ public class WordCloudHistoryActivity extends AppCompatActivity {
             //send text to to output activity to re-create cloud & results
             Intent i = new Intent(WordCloudHistoryActivity.this, WordCloudOutputActivity.class);
             i.putExtra("txtInput", wc.toString());
+            i.putExtra("skipDBstore", true);
             startActivity(i);
         });
     }

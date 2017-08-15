@@ -116,7 +116,9 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         wordCloud.setColors(ColorTemplate.MATERIAL_COLORS);
         wordCloud.notifyDataSetChanged();
 
-        storeInDB();
+        //don't store anything in db if skipDBstore is true
+        if (! i.getBooleanExtra("skipDBstore", false))
+            storeInDB();
         populateResultsOutput();
     }
 
