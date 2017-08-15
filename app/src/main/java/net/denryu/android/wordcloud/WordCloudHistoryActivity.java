@@ -1,14 +1,17 @@
 package net.denryu.android.wordcloud;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import java.util.ArrayList;
 
 public class WordCloudHistoryActivity extends AppCompatActivity {
@@ -30,6 +33,22 @@ public class WordCloudHistoryActivity extends AppCompatActivity {
         ArrayList<TextInput> textInputs = db.getTextInputs();
         historyListView.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, textInputs));
+
+        historyListView.setOnItemClickListener((AdapterView<?> parent, View v, int pos, long id) -> {
+
+            //retrieve TextInput that was clicked
+            TextInput currTextInput = (TextInput) parent.getAdapter().getItem(pos);
+            long currInputId = currTextInput.inputId;
+
+            //build new WordCounter using words and counts stored in DB
+            WordCounter wc = db.getWordCounter(currInputId);
+            Log.d("wordcounter", "selected inputid: " + currInputId + ", wordcounter contents: " + wc);
+
+            //send text to to output activity to re-create cloud & results
+            Intent i = new Intent(WordCloudHistoryActivity.this, WordCloudOutputActivity.class);
+            i.putExtra("txtInput", wc.toString());
+            startActivity(i);
+        });
     }
 
     @Override
@@ -47,6 +66,7 @@ public class WordCloudHistoryActivity extends AppCompatActivity {
                 refreshHistory();
                 break;
             case R.id.item_new_input:
+                //start wordcloudhistory_activity
                 Intent i = new Intent(WordCloudHistoryActivity.this, WordCloudActivity.class);
                 startActivity(i);
                 break;

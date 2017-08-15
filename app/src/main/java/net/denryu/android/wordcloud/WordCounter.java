@@ -1,19 +1,13 @@
 package net.denryu.android.wordcloud;
 
-//import java.util.Comparator;
-//import java.util.Map;
-//import java.util.Set;
-//import java.util.TreeMap;
-//import java.io.*;
+
 import net.alhazmy13.wordcloud.WordCloud;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.*;
 
 import static java.util.Arrays.stream;
-//import android.util.Log;
 
 /**
  * Created by Joe on 7/16/2017.
@@ -26,8 +20,18 @@ public class WordCounter {
     public String mostCommonWord;
     public double appearanceRate;
 
+    public WordCounter(String text) {
+        this.countWords(text);
+    }
+    public WordCounter(Map<String, Integer> wordCountMap) {
+        this.wordCountMap = wordCountMap;
+    }
+
     public Map<String, Integer> getWordCountMap() {
         return wordCountMap;
+    }
+    public void setWordCountMap(Map<String, Integer> wcm) {
+        wordCountMap = wcm;
     }
 
     public void countWords(String in){
@@ -63,7 +67,7 @@ public class WordCounter {
         return foundWord.isPresent() ? foundWord.get() : new AbstractMap.SimpleEntry<>("[no words entered]",0);
     }
 
-    protected List<WordCloud> deriveMostCommonWordsStat()
+    protected List<WordCloud> createCloudList()
     {
         Stream<Map.Entry<String,Integer>> wordStream = wordCountMap.entrySet().stream();
         ArrayList<WordCloud> cloudList = new ArrayList<>();
@@ -99,4 +103,13 @@ public class WordCounter {
         return countOfWords;
     }
 
+    //output all words in WordCounter times the number of appearances, space delimited
+    // E.g. bike, 5 => bike bike bike bike bike
+    public String toString() {
+        String output = "";
+        for (Map.Entry<String,Integer> mapItem : wordCountMap.entrySet())
+            for (int i=0; i < mapItem.getValue(); i++)
+                output += mapItem.getKey() + " ";
+        return output;
+    }
 }
