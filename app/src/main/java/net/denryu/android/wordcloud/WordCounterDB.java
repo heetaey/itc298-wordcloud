@@ -55,7 +55,6 @@ public class WordCounterDB {
                     ", " + COUNT + " INTEGER NOT NULL" +
                     ", " + WORDS_PARENT_INPUT_ID + " INTEGER NOT NULL" +
                     ", FOREIGN KEY(" + WORDS_PARENT_INPUT_ID + ") REFERENCES " + INPUTS_TABLE + "(" + INPUT_ID + ")" +
-//                    IMPORT_COUNT + ", INTEGER NOT NULL" +
                     ");";
 
     //db command constants
@@ -96,12 +95,7 @@ public class WordCounterDB {
 
     //populate database with new words and counts
     //returns the ID of the input row. textInput must have non-null WordCounter
-    public long storeInput(TextInput textInput)
-            /*Map<String, Integer> wordCountMap,
-                            String advertisingId,
-                            String inputTextSource,
-                            String userLocation)
-                            */ {
+    public long storeInput(TextInput textInput) {
         long lastRowID = 0;
         long inputId = 0;
 
@@ -246,5 +240,4 @@ public class WordCounterDB {
             onCreate(db);
         }
     }
-
 }
