@@ -144,7 +144,7 @@ public class WordCounterDB {
 
         long rowID = db.insert(WORDS_TABLE, null, cv);
 
-        Log.d("WordCounter", "Added to " + WORDS_TABLE + " table at row " + rowID + ": " + word + " with count of " + count);
+        //Log.d("WordCounter", "Added to " + WORDS_TABLE + " table at row " + rowID + ": " + word + " with count of " + count);
         return rowID;
     }
 
