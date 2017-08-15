@@ -109,7 +109,6 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         list = wordCounter.deriveMostCommonWordsStat();
         WordCloudView wordCloud = (WordCloudView) findViewById(R.id.wordCloud);
         wordCloud.setDataSet(list);
-        wordCloud.setSize(300, 350);
         wordCloud.setColors(ColorTemplate.MATERIAL_COLORS);
         wordCloud.notifyDataSetChanged();
 
