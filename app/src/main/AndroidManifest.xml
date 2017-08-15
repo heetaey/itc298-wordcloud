@@ -40,7 +40,10 @@
         <activity
             android:name=".WordCloudOutputActivity"
             android:label="Word Cloud"></activity>
-        <activity android:name=".WordCloudHistoryActivity"></activity>
+        <activity
+            android:name=".WordCloudHistoryActivity"
+            android:label="Word Cloud">
+        </activity>
     </application>
 
 </manifest>

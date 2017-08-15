@@ -23,7 +23,7 @@ import java.util.List;
 
 import static android.R.id.list;
 
-public class WordCloudHistoryActivity extends ListActivity {
+public class WordCloudHistoryActivity extends AppCompatActivity {
 
     private ListView historyListView;
     WordCounterDB db;
@@ -38,9 +38,13 @@ public class WordCloudHistoryActivity extends ListActivity {
         ArrayList<TextInput> textInputs = db.getTextInputs();
 
 
-        setListAdapter(new ArrayAdapter<>(this,
+//        setListAdapter(new ArrayAdapter<>(this,
+//                android.R.layout.simple_list_item_1, textInputs));
+//        getListView().setTextFilterEnabled(false);
+
+        historyListView.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, textInputs));
-        getListView().setTextFilterEnabled(false);
+
     }
 
     @Override
@@ -56,9 +60,8 @@ public class WordCloudHistoryActivity extends ListActivity {
             case R.id.item_clear_history:
                 db.clearDB();
                 break;
-//            case R.id.item_history:
-//                //go to wordcloudhistory_activity
-//                break;
+            case R.id.item_new_input:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
