@@ -42,7 +42,7 @@
             android:label="Word Cloud"></activity>
         <activity
             android:name=".WordCloudHistoryActivity"
-            android:label="Word Cloud">
+            android:label="History">
         </activity>
     </application>
 
