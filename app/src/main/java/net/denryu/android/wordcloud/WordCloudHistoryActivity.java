@@ -40,7 +40,7 @@ public class WordCloudHistoryActivity extends ListActivity {
 
         setListAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, textInputs));
-        getListView().setTextFilterEnabled(true);
+        getListView().setTextFilterEnabled(false);
 //
 //        LayoutInflater inflater = (LayoutInflater)
 //                this.getSystemService(INFLAT);
@@ -58,7 +58,7 @@ public class WordCloudHistoryActivity extends ListActivity {
         inflater.inflate(R.menu.menu_word_history, menu);
         return super.onCreateOptionsMenu(menu);
     }
-    
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
