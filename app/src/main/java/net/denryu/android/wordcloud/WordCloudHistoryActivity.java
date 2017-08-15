@@ -42,9 +42,13 @@ public class WordCloudHistoryActivity extends AppCompatActivity {
 //                android.R.layout.simple_list_item_1, textInputs));
 //        getListView().setTextFilterEnabled(false);
 
+        refreshHistory();
+    }
+
+    private void refreshHistory() {
+        ArrayList<TextInput> textInputs = db.getTextInputs();
         historyListView.setAdapter(new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, textInputs));
-
     }
 
     @Override
@@ -59,6 +63,7 @@ public class WordCloudHistoryActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.item_clear_history:
                 db.clearDB();
+                refreshHistory();
                 break;
             case R.id.item_new_input:
                 break;
