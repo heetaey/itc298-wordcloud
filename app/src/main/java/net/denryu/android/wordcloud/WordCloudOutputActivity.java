@@ -137,10 +137,6 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         wordCounter.countWords(text);
     }
 
-    private void clearHistory() {
-        wordCounterDB.clearDB();
-    }
-
     private void generateText() {
         String[] data = wc.toString().split(" ");
         list = new ArrayList<>();
