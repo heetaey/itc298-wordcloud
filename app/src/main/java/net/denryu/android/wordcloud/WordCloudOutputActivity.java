@@ -1,6 +1,7 @@
 package net.denryu.android.wordcloud;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -8,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -52,7 +54,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
                 Log.d(TAG, "Permission is granted");
                 return true;
             } else {
-                Log.d(TAG, "Permission is revoked");
+                Log.d(TAG, "Permission hasn't been granted yet");
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
@@ -65,9 +67,19 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Log.v(TAG, "Permission: " + permissions[0] + "was " + grantResults[0]);
             //resume tasks needing this permission
+            Bitmap bitmap = takeScreenshot();
+            saveBitmap(bitmap);
+            shareIt();
+        } else {
+            //user didn't grant permissions, do nothing (don't try to share)
+            new AlertDialog.Builder(this).setTitle("Unable to Share")
+                    .setMessage("In order to share results, this app needs permission to write to storage.")
+                    .setNeutralButton("OK", (DialogInterface dialog, int which) -> {
+                        //do nothing
+                    }).show();
         }
     }
 
@@ -137,9 +149,14 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_share:
-                Bitmap bitmap = takeScreenshot();
-                saveBitmap(bitmap);
-                shareIt();
+                if (isStoragePermissionGranted()) {
+                    Bitmap bitmap = takeScreenshot();
+                    saveBitmap(bitmap);
+                    shareIt();
+                } else {
+                    //false, so isStoragePesmissions triggered an async permissions request to user
+                    //Save and share will be done inside onRequestPermissionsResult
+                }
                 break;
             case R.id.item_history:
                 Intent i = new Intent(WordCloudOutputActivity.this, WordCloudHistoryActivity.class);
@@ -162,8 +179,8 @@ public class WordCloudOutputActivity extends AppCompatActivity {
 
     private void saveBitmap(Bitmap bitmap) {
 
-        //This is for asking user granting permission to access the storage (after SDK23)
-        isStoragePermissionGranted();
+//        //This is for asking user granting permission to access the storage (after SDK23)
+//        isStoragePermissionGranted();
         imagePath = new File(Environment.getExternalStorageDirectory() + "/scrnshot.png"); ////File imagePath
         FileOutputStream fos;
         try {
