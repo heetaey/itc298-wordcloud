@@ -9,6 +9,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 public class WordCounterDB {
@@ -180,7 +181,6 @@ public class WordCounterDB {
         this.closeDB();
 
         return textInputs;
-
     }
 
     private static TextInput getTextInputFromCursor(Cursor cursor) {
@@ -200,6 +200,34 @@ public class WordCounterDB {
                 return null;
             }
         }
+    }
+
+    //retrieve the word counts for a single input
+    public WordCounter getWordCounter(long inputId) {
+
+        String where = WORDS_PARENT_INPUT_ID + "= ?";
+        String[] whereArgs = {Long.toString(inputId)};
+
+        this.openReadableDB();
+        Cursor cursor = db.query(WORDS_TABLE, null, where, whereArgs, null, null, null, null);
+
+
+        Map<String, Integer> wcMap = new HashMap<>();
+        String word = "";
+        int count = 0;
+        while (cursor.moveToNext()) {
+            word = cursor.getString(WORD_COL);
+            count = cursor.getInt(COUNT_COL);
+            wcMap.put(word, count);
+        }
+        WordCounter wc = new WordCounter(wcMap);
+//        wc.setWordCountMap(wcMap);
+
+        if (cursor != null)
+            cursor.close();
+        this.closeDB();
+
+        return wc;
     }
 
     //drop database tables, but maintain database definition

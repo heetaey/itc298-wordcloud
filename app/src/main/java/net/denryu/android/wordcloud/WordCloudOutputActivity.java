@@ -29,14 +29,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class WordCloudOutputActivity extends AppCompatActivity {
     private static final String TAG = "WordCloud";
     List<WordCloud> list;
-    WordCounter wc = new WordCounter();
 
     private TextView mostWordResult;
     private TextView appearanceResult;
@@ -85,38 +82,33 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         };
         new Thread(getAdvertIdTask).start();
 
-        //This is for asking user granting permission to access the storage (after SDK23)
-        isStoragePermissionGranted();
-
         mostWordResult = (TextView) findViewById(R.id.commonWord);
         appearanceResult = (TextView) findViewById(R.id.appearanceResult);
         uniqueResult = (TextView) findViewById(R.id.distinctResult);
         totalCountResult = (TextView) findViewById(R.id.totalCountings);
 
-        wordCounter = new WordCounter();
         wordCounterDB = new WordCounterDB(this);
 
         Intent i = getIntent();
         String getText = i.getStringExtra("txtInput");
 
-        if (getText.length() > 13)
-            textSource = getText.substring(0, 12) + "...";
+        if (getText.length() > 30)
+            textSource = getText.substring(0, 29) + "...";
         else
             textSource = getText;
 
-        wordCounter.countWords(getText);
-        generateText();
-        list = wordCounter.deriveMostCommonWordsStat();
+        wordCounter = new WordCounter(getText);
+        list = wordCounter.createCloudList();
         WordCloudView wordCloud = (WordCloudView) findViewById(R.id.wordCloud);
         wordCloud.setDataSet(list);
         wordCloud.setColors(ColorTemplate.MATERIAL_COLORS);
         wordCloud.notifyDataSetChanged();
 
-        processInput(getText);
-        populateResults();
+        storeInDB();
+        populateResultsOutput();
     }
 
-    public void populateResults() {
+    private void storeInDB() {
         int versionCode = 0;
         versionCode = BuildConfig.VERSION_CODE;
         long currDate = System.currentTimeMillis();
@@ -125,24 +117,13 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         TextInput currInput = new TextInput(advertisingId, versionCode, currDate, null, textSource, wordCounter);
 
         wordCounterDB.storeInput(currInput);
+    }
+    public void populateResultsOutput() {
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
         String appearanceRateString = String.valueOf((int) (100 * wordCounter.appearanceRate)) + '%';
         appearanceResult.setText(appearanceRateString);
-    }
-
-    private void processInput(String text) {
-        wordCounter.countWords(text);
-    }
-
-    private void generateText() {
-        String[] data = wc.toString().split(" ");
-        list = new ArrayList<>();
-        Random random = new Random();
-        for (String s : data) {
-            list.add(new WordCloud(s, random.nextInt(50)));
-        }
     }
 
     @Override
@@ -180,6 +161,9 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     }
 
     private void saveBitmap(Bitmap bitmap) {
+
+        //This is for asking user granting permission to access the storage (after SDK23)
+        isStoragePermissionGranted();
         imagePath = new File(Environment.getExternalStorageDirectory() + "/scrnshot.png"); ////File imagePath
         FileOutputStream fos;
         try {
@@ -223,7 +207,5 @@ public class WordCloudOutputActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         Log.d("wordcounter", "AdvertID is: " + advertisingId);
-
     }
-
 }

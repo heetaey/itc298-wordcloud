@@ -1,5 +1,7 @@
 package net.denryu.android.wordcloud;
 
+import android.icu.text.SimpleDateFormat;
+
 import java.util.Date;
 
 public class TextInput {
@@ -7,7 +9,7 @@ public class TextInput {
     private WordCounter wordCounter;
     private String userId, inputTextSource, userLocation;
     int wordCloudVersionCode;
-    long inputId;
+    long inputId = -1;
     long createDateMillis;
 
     public TextInput(String userId,
@@ -74,7 +76,12 @@ public class TextInput {
         this.wordCounter = wc;
     }
 
-    public WordCounter getWordCounter() {  return wordCounter;  }
+    public WordCounter getWordCounter() { return wordCounter; }
+
+    public void setWordCounter(WordCounter wc) {
+        wordCounter = wc;
+    }
+
     public String getUserId () { return userId; }
     public String getInputTextSource() { return inputTextSource; }
     public String getUserLocation() { return userLocation; }
@@ -83,9 +90,24 @@ public class TextInput {
 
     @Override
     public String toString() {
+        String stringout;
+
         Date date = new Date(createDateMillis);
 
-        return date + " " + this.inputTextSource;
+        SimpleDateFormat calendarDate = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat weekdayTime = new SimpleDateFormat("EEEE hh:mm a");
+        SimpleDateFormat time = new SimpleDateFormat("h:mm a");
+
+        Date today = new Date();
+        long diff = today.getTime() - createDateMillis;
+        if (diff > 518400000)
+            stringout = calendarDate.format(date);
+        else if (diff > 86400000)
+            stringout = weekdayTime.format(date);
+        else
+            stringout = time.format(date);
+
+        return stringout + " " + this.inputTextSource.trim();
     }
 
 }

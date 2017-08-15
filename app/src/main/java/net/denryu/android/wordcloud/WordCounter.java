@@ -13,8 +13,18 @@ public class WordCounter {
     public String mostCommonWord;
     public double appearanceRate;
 
+    public WordCounter(String text) {
+        this.countWords(text);
+    }
+    public WordCounter(Map<String, Integer> wordCountMap) {
+        this.wordCountMap = wordCountMap;
+    }
+
     public Map<String, Integer> getWordCountMap() {
         return wordCountMap;
+    }
+    public void setWordCountMap(Map<String, Integer> wcm) {
+        wordCountMap = wcm;
     }
 
     public boolean isPreposition(String words) {
@@ -59,8 +69,10 @@ public class WordCounter {
         return foundWord.isPresent() ? foundWord.get() : new AbstractMap.SimpleEntry<>("[no words entered]", 0);
     }
 
-    protected List<WordCloud> deriveMostCommonWordsStat() {
-        Stream<Map.Entry<String, Integer>> wordStream = wordCountMap.entrySet().stream();
+    protected List<WordCloud> createCloudList()
+    {
+        Stream<Map.Entry<String,Integer>> wordStream = wordCountMap.entrySet().stream();
+
         ArrayList<WordCloud> cloudList = new ArrayList<>();
 
         wordStream.sorted(Comparator.comparingInt(Map.Entry<String, Integer>::getValue).reversed())
@@ -91,4 +103,13 @@ public class WordCounter {
         return countOfWords;
     }
 
+    //output all words in WordCounter times the number of appearances, space delimited
+    // E.g. bike, 5 => bike bike bike bike bike
+    public String toString() {
+        String output = "";
+        for (Map.Entry<String,Integer> mapItem : wordCountMap.entrySet())
+            for (int i=0; i < mapItem.getValue(); i++)
+                output += mapItem.getKey() + " ";
+        return output;
+    }
 }
