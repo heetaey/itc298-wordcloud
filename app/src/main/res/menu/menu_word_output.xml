@@ -11,4 +11,9 @@
         android:title="History"
         app:showAsAction="ifRoom" />
 
+    <item
+        android:id="@+id/item_new_input"
+        android:title="New"
+        app:showAsAction="ifRoom" />
+
 </menu>

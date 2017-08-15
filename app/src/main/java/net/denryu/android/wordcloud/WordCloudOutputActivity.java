@@ -169,6 +169,11 @@ public class WordCloudOutputActivity extends AppCompatActivity {
                 Intent i = new Intent(WordCloudOutputActivity.this, WordCloudHistoryActivity.class);
                 startActivity(i);
                 break;
+            case R.id.item_new_input:
+                //start wordcloudhistory_activity
+                Intent intent = new Intent(WordCloudOutputActivity.this, WordCloudActivity.class);
+                startActivity(intent);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

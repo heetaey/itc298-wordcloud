@@ -114,7 +114,6 @@ public class WordCloudActivity extends AppCompatActivity implements
                         .setNeutralButton("OK", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-
                             }
                         }).show();
                 break;
