@@ -44,7 +44,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     private TextView totalCountResult;
     private File imagePath;
 
-    public String advertisingId;
+    public String advertisingId, textSource;
     private WordCounter wordCounter;
     private WordCounterDB wordCounterDB;
 
@@ -79,10 +79,12 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordcloud_output);
 
+        //start thread to retrieve advertising ID for later use
         Runnable getAdvertIdTask = () ->  {
             setAdvertId();
         };
         new Thread(getAdvertIdTask).start();
+
         //This is for asking user granting permission to access the storage (after SDK23)
         isStoragePermissionGranted();
 
@@ -96,6 +98,11 @@ public class WordCloudOutputActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         String getText = i.getStringExtra("txtInput");
+
+        if (getText.length() > 13)
+            textSource = getText.substring(0, 12) + "...";
+        else
+            textSource = getText;
 
         wordCounter.countWords(getText);
         generateText();
@@ -111,7 +118,14 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     }
 
     public void populateResults() {
-        wordCounterDB.storeInput(wordCounter.getWordCountMap(), advertisingId, null, null);
+        int versionCode = 0;
+        versionCode = BuildConfig.VERSION_CODE;
+        long currDate = System.currentTimeMillis();
+
+        Log.d("Wordcounter", "textSource is: " + textSource);
+        TextInput currInput = new TextInput(advertisingId, versionCode, currDate, null, textSource, wordCounter);
+
+        wordCounterDB.storeInput(currInput);
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
@@ -151,8 +165,9 @@ public class WordCloudOutputActivity extends AppCompatActivity {
                 saveBitmap(bitmap);
                 shareIt();
                 break;
-            case R.id.item_clear_history:
-                clearHistory();
+            case R.id.item_history:
+                Intent i = new Intent(WordCloudOutputActivity.this, WordCloudHistoryActivity.class);
+                startActivity(i);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -191,25 +206,20 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     }
 
     private void setAdvertId() {
-        //retrieve advertising ID
-//        AdvertisingIdClient.Info idInfo = null;
-
-
         AdvertisingIdClient.Info id2Info = null;
         try {
             id2Info = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
-//                    Log.d("wordcounter", idInfo.toString());
         } catch (GooglePlayServicesNotAvailableException |GooglePlayServicesRepairableException e) {
-            Log.d("wordcounter", "inside google error");
+            Log.d("wordcounter", "Google Play error: " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
-            Log.d("wordcounter", "inside general error " + e.getMessage());
+            Log.d("wordcounter", "Error setting advertId: " + e.getMessage());
             e.printStackTrace();
         }
         try{
             advertisingId = id2Info.getId();
         }catch (Exception e){
-            Log.d("wordcounter", "inside getId error");
+            Log.d("wordcounter", "error retrieving advertising ID: " + e.getMessage());
             e.printStackTrace();
         }
         Log.d("wordcounter", "AdvertID is: " + advertisingId);

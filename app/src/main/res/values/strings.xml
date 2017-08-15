@@ -9,4 +9,5 @@
     <string name="totalWord">Total word count</string>
     <string name="openFileButton">OPEN FILE</string>
     <string name="clearInput">Clear Input</string>
+    <string name="stringHistory">History</string>
 </resources>

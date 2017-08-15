@@ -3,13 +3,13 @@
     package="net.denryu.android.wordcloud">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/wordcloud"
-        android:logo="@mipmap/wordcloud"
         android:label="@string/app_name"
+        android:logo="@mipmap/wordcloud"
         android:roundIcon="@mipmap/wordcloud"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -19,22 +19,28 @@
             android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/*" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <data android:mimeType="text/*" />
             </intent-filter>
-            </activity>
+        </activity>
         <activity
             android:name=".WordCloudOutputActivity"
-            android:label="Word Cloud">
-        </activity>
+            android:label="Word Cloud"></activity>
+        <activity android:name=".WordCloudHistoryActivity"></activity>
     </application>
+
 </manifest>
