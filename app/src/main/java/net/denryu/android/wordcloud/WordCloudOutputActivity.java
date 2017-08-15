@@ -77,7 +77,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         setContentView(R.layout.wordcloud_output);
 
         //start thread to retrieve advertising ID for later use
-        Runnable getAdvertIdTask = () ->  {
+        Runnable getAdvertIdTask = () -> {
             setAdvertId();
         };
         new Thread(getAdvertIdTask).start();
@@ -193,16 +193,16 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         AdvertisingIdClient.Info id2Info = null;
         try {
             id2Info = AdvertisingIdClient.getAdvertisingIdInfo(getApplicationContext());
-        } catch (GooglePlayServicesNotAvailableException |GooglePlayServicesRepairableException e) {
+        } catch (GooglePlayServicesNotAvailableException | GooglePlayServicesRepairableException e) {
             Log.d("wordcounter", "Google Play error: " + e.getMessage());
             e.printStackTrace();
         } catch (Exception e) {
             Log.d("wordcounter", "Error setting advertId: " + e.getMessage());
             e.printStackTrace();
         }
-        try{
+        try {
             advertisingId = id2Info.getId();
-        }catch (Exception e){
+        } catch (Exception e) {
             Log.d("wordcounter", "error retrieving advertising ID: " + e.getMessage());
             e.printStackTrace();
         }

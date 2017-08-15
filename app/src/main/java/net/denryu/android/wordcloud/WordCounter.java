@@ -1,17 +1,10 @@
 package net.denryu.android.wordcloud;
 
-
 import net.alhazmy13.wordcloud.WordCloud;
 
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.*;
-
-import static java.util.Arrays.stream;
-
-/**
- * Created by Joe on 7/16/2017.
- */
 
 public class WordCounter {
 
@@ -34,8 +27,18 @@ public class WordCounter {
         wordCountMap = wcm;
     }
 
-    public void countWords(String in){
+    public boolean isPreposition(String words) {
+        String[] wordList = {"the", "to", "a", "of", "in", "at",
+                "on", "as", "with", "for", "into", "about", "and", "an",
+                "that", "from"};
+        for (String word : wordList) {
+            if (words.equalsIgnoreCase(word))
+                return true;
+        }
+        return false;
+    }
 
+    public void countWords(String in) {
         //this regex uses all non alpha-numeric characters (plus apostrophes) as delimiters
         String[] allWords = in.split("[^a-zA-Z0-9']+");
 
@@ -43,37 +46,37 @@ public class WordCounter {
         Pattern regex = Pattern.compile("[a-zA-Z0-9']+");
         List<String> cleanWordsList = wordsList.stream()
                 .filter(regex.asPredicate())
+                .filter(text -> !isPreposition(text))
                 .collect(Collectors.toList());
 
         this.countOfWords = cleanWordsList.size();
         this.wordCountMap = new HashMap<>();
 
         Map<String, Long> preliminaryWordMap = cleanWordsList.stream().collect(Collectors.groupingBy(String::toLowerCase, Collectors.counting()));
-        for (Map.Entry<String,Long> wordGroup : preliminaryWordMap.entrySet())
-        {
+        for (Map.Entry<String, Long> wordGroup : preliminaryWordMap.entrySet()) {
             this.wordCountMap.put(wordGroup.getKey(), wordGroup.getValue().intValue());
         }
 
         this.setMostCommonWord();
     }
 
-    private Map.Entry<String, Integer> deriveMostCommonWordStat()
-    {
-        Stream<Map.Entry<String,Integer>> wordStream = wordCountMap.entrySet().stream();
+    private Map.Entry<String, Integer> deriveMostCommonWordStat() {
+        Stream<Map.Entry<String, Integer>> wordStream = wordCountMap.entrySet().stream();
 
-        Optional<Map.Entry<String,Integer>> foundWord = wordStream.sorted(Comparator.comparingInt(Map.Entry<String,Integer>::getValue).reversed())
+        Optional<Map.Entry<String, Integer>> foundWord = wordStream.sorted(Comparator.comparingInt(Map.Entry<String, Integer>::getValue).reversed())
                 .findFirst();
 
-        return foundWord.isPresent() ? foundWord.get() : new AbstractMap.SimpleEntry<>("[no words entered]",0);
+        return foundWord.isPresent() ? foundWord.get() : new AbstractMap.SimpleEntry<>("[no words entered]", 0);
     }
 
     protected List<WordCloud> createCloudList()
     {
         Stream<Map.Entry<String,Integer>> wordStream = wordCountMap.entrySet().stream();
+
         ArrayList<WordCloud> cloudList = new ArrayList<>();
 
-        wordStream.sorted(Comparator.comparingInt(Map.Entry<String,Integer>::getValue).reversed())
-                .limit(12).forEach(word -> cloudList.add(new WordCloud(word.getKey(),word.getValue())));
+        wordStream.sorted(Comparator.comparingInt(Map.Entry<String, Integer>::getValue).reversed())
+                .limit(12).forEach(word -> cloudList.add(new WordCloud(word.getKey(), word.getValue())));
 
 
         return cloudList;
@@ -85,12 +88,9 @@ public class WordCounter {
         this.mostCommonWord = mostCommonWordStat.getKey();
 
         // Ensure CountOfWords is not zero before dividing by it to avoid a DivideByZero exception
-        if(this.countOfWords != 0)
-        {
+        if (this.countOfWords != 0) {
             this.appearanceRate = ((float) mostCommonWordStat.getValue()) / countOfWords;
-        }
-        else
-        {
+        } else {
             this.appearanceRate = 0.0f;
         }
     }
