@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <net.alhazmy13.wordcloud.WordCloudView
+        android:id="@+id/wordCloud"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="50" />
+
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="136dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/mostWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="@string/buzzWord"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/commonWord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/common_word"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/appearanceRate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/mostWord"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="@string/appearanceRate"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:ignore="ObsoleteLayoutParam" />
+
+        <TextView
+            android:id="@+id/appearanceResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/percentage"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/uniqueWords"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="@string/uniqueWords"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/distinctResult"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/distinct_word"
+            android:textSize="25sp" />
+
+        <TextView
+            android:id="@+id/totalCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/uniqueWords"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:text="@string/totalWord"
+            android:textAllCaps="true"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/totalCountings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:text="@string/total_counts"
+            android:textSize="25sp" />
+
+    </LinearLayout>
+</LinearLayout>
