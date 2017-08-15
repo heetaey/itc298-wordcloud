@@ -1,28 +1,15 @@
 package net.denryu.android.wordcloud;
 
-import android.app.ListActivity;
-import android.app.LoaderManager;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
-import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import static android.R.id.list;
 
 public class WordCloudHistoryActivity extends AppCompatActivity {
 
@@ -36,8 +23,6 @@ public class WordCloudHistoryActivity extends AppCompatActivity {
         historyListView = (ListView) findViewById(android.R.id.list);
 
         db = new WordCounterDB(this);
-        ArrayList<TextInput> textInputs = db.getTextInputs();
-
         refreshHistory();
     }
 
@@ -62,7 +47,6 @@ public class WordCloudHistoryActivity extends AppCompatActivity {
                 refreshHistory();
                 break;
             case R.id.item_new_input:
-                //start wordcloudhistory_activity
                 Intent i = new Intent(WordCloudHistoryActivity.this, WordCloudActivity.class);
                 startActivity(i);
                 break;

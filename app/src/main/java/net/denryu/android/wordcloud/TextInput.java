@@ -1,12 +1,6 @@
 package net.denryu.android.wordcloud;
 
-import android.util.Log;
-
 import java.util.Date;
-
-/**
- * Created by archie on 8/14/2017.
- */
 
 public class TextInput {
 

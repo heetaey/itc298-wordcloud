@@ -57,7 +57,7 @@ public class WordCloudActivity extends AppCompatActivity implements
                     String content = readFileContent(uri);
                     txtInput.setText(content);
                 } catch (IOException e) {
-                    //Some log, Alert or Toast goes here
+                    e.printStackTrace();
                 }
             } else if ("text/plain".equals(type)) {
                 handleSendText(intent);
@@ -72,7 +72,7 @@ public class WordCloudActivity extends AppCompatActivity implements
                     String content = readFileContent(uri);
                     txtInput.setText(content);
                 } catch (IOException e) {
-                    //Some log, Alert or Toast goes here
+                    e.printStackTrace();
                 }
 
             }
@@ -118,11 +118,9 @@ public class WordCloudActivity extends AppCompatActivity implements
                         }).show();
                 break;
             case R.id.item_history:
-                //start wordcloudhistory_activity
                 Intent i = new Intent(WordCloudActivity.this, WordCloudHistoryActivity.class);
                 startActivity(i);
                 break;
-
         }
         return super.onOptionsItemSelected(item);
     }
@@ -184,7 +182,7 @@ public class WordCloudActivity extends AppCompatActivity implements
                     String content = readFileContent(uri);
                     txtInput.setText(content);
                 } catch (IOException e) {
-                    //Some log, Alert or Toast goes here
+                    e.printStackTrace();
                 }
 
             }
