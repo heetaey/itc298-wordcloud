@@ -16,7 +16,7 @@
         android:orientation="vertical"
         android:layout_below="@+id/wordCloud"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="20dp">
+        >
 
         <TextView
             android:id="@+id/mostWord"
@@ -38,7 +38,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_below="@+id/linearLayout"
-            android:layout_marginBottom="15sp"
             android:layout_gravity="center"
             android:layout_weight="1"
             android:textSize="25dp"
@@ -65,7 +64,6 @@
             android:layout_alignEnd="@+id/commonWord"
             android:layout_below="@+id/commonWord"
             android:layout_gravity="center"
-            android:layout_marginBottom="15sp"
             android:layout_weight="1"
             android:text="PERCENTAGE!"
             android:textSize="25sp" />
@@ -90,7 +88,6 @@
             android:layout_alignStart="@+id/appearanceResult"
             android:layout_below="@+id/appearanceResult"
             android:layout_gravity="center"
-            android:layout_marginBottom="15sp"
             android:layout_weight="1"
             android:text="DISTINCT WORD!"
             android:textSize="25sp" />
@@ -115,7 +112,6 @@
             android:layout_alignStart="@+id/distinctResult"
             android:layout_below="@+id/distinctResult"
             android:layout_gravity="center"
-            android:layout_marginBottom="15sp"
             android:layout_weight="1"
             android:text="TOTAL COUNTS!"
             android:textSize="25sp" />
