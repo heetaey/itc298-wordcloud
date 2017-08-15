@@ -10,4 +10,8 @@
     <string name="openFileButton">OPEN FILE</string>
     <string name="clearInput">Clear Input</string>
     <string name="stringHistory">History</string>
+    <string name="percentage">PERCENTAGE!</string>
+    <string name="total_counts">TOTAL COUNTS!</string>
+    <string name="distinct_word">DISTINCT WORD!</string>
+    <string name="common_word">COMMON WORD!</string>
 </resources>
