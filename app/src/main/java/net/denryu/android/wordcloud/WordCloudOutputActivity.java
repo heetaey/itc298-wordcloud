@@ -29,14 +29,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class WordCloudOutputActivity extends AppCompatActivity {
     private static final String TAG = "WordCloud";
     List<WordCloud> list;
-//    WordCounter wc = new WordCounter();
 
     private TextView mostWordResult;
     private TextView appearanceResult;
@@ -90,7 +87,6 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         uniqueResult = (TextView) findViewById(R.id.distinctResult);
         totalCountResult = (TextView) findViewById(R.id.totalCountings);
 
-//        wordCounter = new WordCounter();
         wordCounterDB = new WordCounterDB(this);
 
         Intent i = getIntent();
@@ -102,15 +98,12 @@ public class WordCloudOutputActivity extends AppCompatActivity {
             textSource = getText;
 
         wordCounter = new WordCounter(getText);
-//        wordCounter.countWords(getText);
-//        generateText();
         list = wordCounter.createCloudList();
         WordCloudView wordCloud = (WordCloudView) findViewById(R.id.wordCloud);
         wordCloud.setDataSet(list);
         wordCloud.setColors(ColorTemplate.MATERIAL_COLORS);
         wordCloud.notifyDataSetChanged();
 
-//        processInput(getText);
         storeInDB();
         populateResultsOutput();
     }
@@ -132,19 +125,6 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         String appearanceRateString = String.valueOf((int) (100 * wordCounter.appearanceRate)) + '%';
         appearanceResult.setText(appearanceRateString);
     }
-
-//    private void processInput(String text) {
-//        wordCounter.countWords(text);
-//    }
-
-//    private void generateText() {
-////        String[] data = wc.toString().split(" ");
-////        list = new ArrayList<>();
-////        Random random = new Random();
-////        for (String s : data) {
-////        list.add(new WordCloud(wordCounter.toString(), random.nextInt(50)));
-////        }
-//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -227,7 +207,5 @@ public class WordCloudOutputActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         Log.d("wordcounter", "AdvertID is: " + advertisingId);
-
     }
-
 }
