@@ -1,23 +1,10 @@
 package net.denryu.android.wordcloud;
 
-//import java.util.Comparator;
-//import java.util.Map;
-//import java.util.Set;
-//import java.util.TreeMap;
-//import java.io.*;
 import net.alhazmy13.wordcloud.WordCloud;
 
 import java.util.*;
-import java.util.function.Function;
 import java.util.regex.Pattern;
 import java.util.stream.*;
-
-import static java.util.Arrays.stream;
-//import android.util.Log;
-
-/**
- * Created by Joe on 7/16/2017.
- */
 
 public class WordCounter {
 
@@ -32,14 +19,17 @@ public class WordCounter {
 
     public void countWords(String in){
 
-        //this regex uses all non alpha-numeric characters (plus apostrophes) as delimiters
-        String[] allWords = in.split("[^a-zA-Z0-9']+");
+            //this regex uses all non alpha-numeric characters (plus apostrophes) as delimiters
+            String[] allWords = in.split("[^a-zA-Z0-9']+");
 
-        List<String> wordsList = new ArrayList<String>(Arrays.asList(allWords));
-        Pattern regex = Pattern.compile("[a-zA-Z0-9']+");
-        List<String> cleanWordsList = wordsList.stream()
-                .filter(regex.asPredicate())
-                .collect(Collectors.toList());
+            List<String> wordsList = new ArrayList<String>(Arrays.asList(allWords));
+            Pattern regex = Pattern.compile("[a-zA-Z0-9']+");
+            List<String> cleanWordsList = wordsList.stream()
+                    .filter(regex.asPredicate())
+                    .filter(text -> !text.equalsIgnoreCase("the")
+                            && !text.equalsIgnoreCase("a")
+                            && !text.equalsIgnoreCase("an"))
+                    .collect(Collectors.toList());
 
         this.countOfWords = cleanWordsList.size();
         this.wordCountMap = new HashMap<>();
