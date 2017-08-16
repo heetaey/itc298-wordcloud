@@ -27,10 +27,58 @@ public class WordCounter {
         wordCountMap = wcm;
     }
 
-    public boolean isPreposition(String words) {
-        String[] wordList = {"the", "to", "a", "of", "in", "at",
-                "on", "as", "with", "for", "into", "about", "and", "an",
-                "that", "from"};
+    public boolean isFiftyMostCommon(String words) {
+        String[] wordList = {
+                "the", "be", "to", "of", "and", "a", "in", "that", "have", "i",
+                "it", "for", "not", "on", "with", "he", "as", "you", "do", "at",
+                "this", "but", "his", "by", "from", "they", "we", "say", "her", "she",
+                "or", "an", "will", "my", "one", "all", "would", "there", "their", "what",
+                "so", "up", "out", "if", "about", "who", "get", "which", "go", "me",
+                };
+        for (String word : wordList) {
+            if (words.equalsIgnoreCase(word))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isSecondFiftyMostCommon(String words) {
+        String[] wordList = {
+                "when", "make", "can", "like", "time", "no", "just", "him", "know", "take",
+                "people", "into", "year", "your", "good", "some", "could", "them", "see", "other",
+                "than", "then", "now", "look", "only", "come", "its", "over", "think", "also",
+                "back", "after", "use", "two", "how", "our", "work", "first", "well", "way",
+                "even", "new", "want", "because", "any", "these", "give", "day", "most", "us",
+                "so", "up", "out", "if", "about", "who", "get", "which", "go", "me",
+                };
+        for (String word : wordList) {
+            if (words.equalsIgnoreCase(word))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isCommonPreposition(String words) {
+        String[] wordList = {
+                "to", "of", "in", "for", "on", "with", "at", "by", "from", "up",
+                "about", "into", "over", "after", "through", "after", "over", "between", "out", "against",
+                "during", "without", "before", "under", "around", "among"
+        };
+        for (String word : wordList) {
+            if (words.equalsIgnoreCase(word))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean isAuxiliaryVerb(String words) {
+        String[] wordList = {
+                "be", "am", "are", "is", "was", "were", "being", "been",
+                "can", "could",
+                "do", "does", "did",
+                "have", "has", "had", "having",
+                "may", "might", "must", "shall", "should", "will", "would"
+        };
         for (String word : wordList) {
             if (words.equalsIgnoreCase(word))
                 return true;
@@ -46,7 +94,10 @@ public class WordCounter {
         Pattern regex = Pattern.compile("[a-zA-Z0-9']+");
         List<String> cleanWordsList = wordsList.stream()
                 .filter(regex.asPredicate())
-                .filter(text -> !isPreposition(text))
+                .filter(text -> !isFiftyMostCommon(text))
+                .filter(text -> !isSecondFiftyMostCommon(text))
+                .filter(text -> !isCommonPreposition(text))
+                .filter(text -> !isAuxiliaryVerb(text))
                 .collect(Collectors.toList());
 
         this.countOfWords = cleanWordsList.size();
