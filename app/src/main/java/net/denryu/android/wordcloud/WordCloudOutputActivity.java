@@ -141,7 +141,15 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
-        String appearanceRateString = String.valueOf((float) (100 * wordCounter.appearanceRate)) + '%';
+        float appearanceRatePercent = (float) wordCounter.appearanceRate * 100;
+        //round to hundredths place
+        appearanceRatePercent = (float) (Math.round(appearanceRatePercent * 100.0)/100.0);
+        String appearanceRateString;
+        if (appearanceRatePercent < 9.5 || appearanceRatePercent > 99)
+            appearanceRateString = String.valueOf(appearanceRatePercent) + '%';
+        else
+            //only whole numbers for 10% to 99%
+            appearanceRateString = String.valueOf((long) appearanceRatePercent) + '%';
         appearanceResult.setText(appearanceRateString);
     }
 
