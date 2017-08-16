@@ -67,7 +67,6 @@ public class WordCloudHistoryActivity extends AppCompatActivity {
                 refreshHistory();
                 break;
             case R.id.item_new_input:
-                //start wordcloudhistory_activity
                 Intent i = new Intent(WordCloudHistoryActivity.this, WordCloudActivity.class);
                 startActivity(i);
                 break;

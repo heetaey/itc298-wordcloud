@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
@@ -120,7 +121,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         wordCloud.notifyDataSetChanged();
 
         //don't store anything in db if skipDBstore is true
-        if (! i.getBooleanExtra("skipDBstore", false))
+        if (!i.getBooleanExtra("skipDBstore", false))
             storeInDB();
         populateResultsOutput();
     }
@@ -135,12 +136,19 @@ public class WordCloudOutputActivity extends AppCompatActivity {
 
         wordCounterDB.storeInput(currInput);
     }
+
     public void populateResultsOutput() {
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
         String appearanceRateString = String.valueOf((float) (100 * wordCounter.appearanceRate)) + '%';
         appearanceResult.setText(appearanceRateString);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        setContentView(R.layout.wordcloud_output);
     }
 
     @Override
@@ -158,9 +166,6 @@ public class WordCloudOutputActivity extends AppCompatActivity {
                     Bitmap bitmap = takeScreenshot();
                     saveBitmap(bitmap);
                     shareIt();
-                } else {
-                    //false, so isStoragePesmissions triggered an async permissions request to user
-                    //Save and share will be done inside onRequestPermissionsResult
                 }
                 break;
             case R.id.item_history:
@@ -183,10 +188,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     }
 
     private void saveBitmap(Bitmap bitmap) {
-
-//        //This is for asking user granting permission to access the storage (after SDK23)
-//        isStoragePermissionGranted();
-        imagePath = new File(Environment.getExternalStorageDirectory() + "/scrnshot.png"); ////File imagePath
+        imagePath = new File(Environment.getExternalStorageDirectory() + "/scrnshot.png");
         FileOutputStream fos;
         try {
             fos = new FileOutputStream(imagePath);
@@ -210,7 +212,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
             sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
             sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
             startActivity(Intent.createChooser(sharingIntent, "Share via"));
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -234,16 +236,14 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         }
         Log.d("wordcounter", "AdvertID is: " + advertisingId);
     }
-    /**
-     * https://stackoverflow.com/questions/7305504/convert-file-uri-to-content-uri
-     * by ban-geoengineering
-     * Converts a file to a content uri, by inserting it into the media store.
-     * Requires this permission: <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-     */
+
     protected static Uri convertFileToContentUri(Context context, File file) throws Exception {
-
-        //Uri localImageUri = Uri.fromFile(localImageFile); // Not suitable as it's not a content Uri
-
+        /**
+         * by ban-geoengineering
+         * https://stackoverflow.com/questions/7305504/convert-file-uri-to-content-uri
+         *
+         * Converts a file to a content uri, by inserting it into the media store.
+         * Requires WRITE_EXTERNAL_STORAGE permission */
         ContentResolver cr = context.getContentResolver();
         String imagePath = file.getAbsolutePath();
         String imageName = null;
@@ -251,7 +251,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         try {
             String uriString = MediaStore.Images.Media.insertImage(cr, imagePath, imageName, imageDescription);
             return Uri.parse(uriString);
-        }catch (Exception e) {
+        } catch (Exception e) {
             Log.e("GREC", e.getMessage(), e);
             return null;
         }
