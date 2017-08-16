@@ -1,6 +1,8 @@
 package net.denryu.android.wordcloud;
 
 import android.Manifest;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -8,6 +10,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -136,7 +139,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
-        String appearanceRateString = String.valueOf((int) (100 * wordCounter.appearanceRate)) + '%';
+        String appearanceRateString = String.valueOf((float) (100 * wordCounter.appearanceRate)) + '%';
         appearanceResult.setText(appearanceRateString);
     }
 
@@ -198,14 +201,18 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     }
 
     private void shareIt() {
-        Uri uri = Uri.fromFile(imagePath);
-        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
-        sharingIntent.setType("image/*");
-        String shareBody = "This is my Word Cloud!";
-        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out my WordCloud!");
-        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
-        startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        try {
+            Uri uri = convertFileToContentUri(getBaseContext(), this.imagePath);
+            Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+            sharingIntent.setType("image/*");
+            String shareBody = "This is my Word Cloud!";
+            sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Check out my WordCloud!");
+            sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+            sharingIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            startActivity(Intent.createChooser(sharingIntent, "Share via"));
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void setAdvertId() {
@@ -227,4 +234,27 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         }
         Log.d("wordcounter", "AdvertID is: " + advertisingId);
     }
+    /**
+     * https://stackoverflow.com/questions/7305504/convert-file-uri-to-content-uri
+     * by ban-geoengineering
+     * Converts a file to a content uri, by inserting it into the media store.
+     * Requires this permission: <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+     */
+    protected static Uri convertFileToContentUri(Context context, File file) throws Exception {
+
+        //Uri localImageUri = Uri.fromFile(localImageFile); // Not suitable as it's not a content Uri
+
+        ContentResolver cr = context.getContentResolver();
+        String imagePath = file.getAbsolutePath();
+        String imageName = null;
+        String imageDescription = null;
+        try {
+            String uriString = MediaStore.Images.Media.insertImage(cr, imagePath, imageName, imageDescription);
+            return Uri.parse(uriString);
+        }catch (Exception e) {
+            Log.e("GREC", e.getMessage(), e);
+            return null;
+        }
+    }
+
 }
