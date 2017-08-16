@@ -136,7 +136,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
         uniqueResult.setText(String.valueOf(wordCounter.distinctWordCount()));
         totalCountResult.setText(String.valueOf(wordCounter.totalWordCount()));
         mostWordResult.setText(String.valueOf(wordCounter.mostCommonWord));
-        String appearanceRateString = String.valueOf((int) (100 * wordCounter.appearanceRate)) + '%';
+        String appearanceRateString = String.valueOf((float) (100 * wordCounter.appearanceRate)) + '%';
         appearanceResult.setText(appearanceRateString);
     }
 
