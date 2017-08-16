@@ -49,19 +49,21 @@ public class WordCloudActivity extends AppCompatActivity implements
         String action = intent.getAction();
         String type = intent.getType();
 
+
+
         if (Intent.ACTION_SEND.equals(action) && type != null) {
-            Log.d("WordCloudActivity", "intentData: " + intent.getClipData().getItemAt(0).toString());
             if ("text/plain".equals(type) && (intent.getClipData().getItemAt(0) != null)) {
                 Uri uri = intent.getClipData().getItemAt(0).getUri();
-                try {
-                    String content = readFileContent(uri);
-                    txtInput.setText(content);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (uri != null) {
+                    try {
+                        String content = readFileContent(uri);
+                        txtInput.setText(content);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                } else if ("text/plain".equals(type)) {
+                    handleSendText(intent);
                 }
-            } else if ("text/plain".equals(type)) {
-                handleSendText(intent);
-                Log.d("WordCloudActivity", "UriIntent: " + intent.toString());
             }
         }
 
