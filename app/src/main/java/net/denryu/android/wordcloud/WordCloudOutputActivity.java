@@ -157,6 +157,34 @@ public class WordCloudOutputActivity extends AppCompatActivity {
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         setContentView(R.layout.wordcloud_output);
+        Runnable getAdvertIdTask = () -> {
+            setAdvertId();
+        };
+        new Thread(getAdvertIdTask).start();
+
+        mostWordResult = (TextView) findViewById(R.id.commonWord);
+        appearanceResult = (TextView) findViewById(R.id.appearanceResult);
+        uniqueResult = (TextView) findViewById(R.id.distinctResult);
+        totalCountResult = (TextView) findViewById(R.id.totalCountings);
+
+        wordCounterDB = new WordCounterDB(this);
+
+        Intent i = getIntent();
+        String getText = i.getStringExtra("txtInput");
+
+        if (getText.length() > 30)
+            textSource = getText.substring(0, 29) + "...";
+        else
+            textSource = getText;
+
+        wordCounter = new WordCounter(getText);
+        list = wordCounter.createCloudList();
+        WordCloudView wordCloud = (WordCloudView) findViewById(R.id.wordCloud);
+        wordCloud.setDataSet(list);
+        wordCloud.setColors(ColorTemplate.MATERIAL_COLORS);
+        wordCloud.notifyDataSetChanged();
+
+        populateResultsOutput();
     }
 
     @Override
