@@ -202,6 +202,10 @@ public class WordCloudOutputActivity extends AppCompatActivity {
                     Bitmap bitmap = takeScreenshot();
                     saveBitmap(bitmap);
                     shareIt();
+                } else {
+                    //storage permissions weren't already granted, so isStoragePesmissions triggered 
+                    // an async permissions request to user
+                    //If persmission granted, Save and share will be done inside onRequestPermissionsResult
                 }
                 break;
             case R.id.item_history:
