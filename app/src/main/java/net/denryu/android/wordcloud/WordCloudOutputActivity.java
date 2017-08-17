@@ -215,6 +215,7 @@ public class WordCloudOutputActivity extends AppCompatActivity {
             case R.id.item_new_input:
                 //start wordcloudhistory_activity
                 Intent intent = new Intent(WordCloudOutputActivity.this, WordCloudActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);
                 break;
         }
