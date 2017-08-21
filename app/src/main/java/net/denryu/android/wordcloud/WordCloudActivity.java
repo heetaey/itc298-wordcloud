@@ -33,7 +33,6 @@ public class WordCloudActivity extends AppCompatActivity implements
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.wordcloud_activity);
 
@@ -48,8 +47,6 @@ public class WordCloudActivity extends AppCompatActivity implements
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-
-
 
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if ("text/plain".equals(type) && (intent.getClipData().getItemAt(0) != null)) {
@@ -96,7 +93,6 @@ public class WordCloudActivity extends AppCompatActivity implements
         if (sharedText != null) {
             txtInput.setText(sharedText);
         }
-
     }
 
     @Override
@@ -129,7 +125,6 @@ public class WordCloudActivity extends AppCompatActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-
             case R.id.generateImage:
                 Intent i = new Intent(WordCloudActivity.this, WordCloudOutputActivity.class);
                 i.putExtra("txtInput", txtInput.getText().toString());
