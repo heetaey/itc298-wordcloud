@@ -1,4 +1,4 @@
-## ITC298: Mobile App Development Capstone 2017: Word Cloud 
+## Mobile Application Development Capstone 2017: Word Cloud 
 
 #### [Michael Archambault](https://github.com/mikearchie), [Turner Tackitt](https://github.com/Hastwell), [Joseph Wanderer](https://github.com/josephwanderer), [Heetae Yang](https://github.com/heetaey)
 
