@@ -17,7 +17,9 @@
 
 ### Input Operation
 - Text to Process can come from a variety of sources
-- Text Field // Cloud Storage (Dropbox, Google Drive, etc.) // Select Files on own Device
+  - Text Field 
+  - Cloud Storage (Dropbox, Google Drive, etc.)
+  - Select Files on own Device
 - Able to copy contents from the web browser (Chrome) and push to the text field <br />
 ![Main](https://github.com/heetaey/itc298-wordcloud/blob/master/images/main.png)
 ![Input](https://github.com/heetaey/itc298-wordcloud/blob/master/images/input.png)
